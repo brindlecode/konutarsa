@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Tip kontrolü, lint, içerik doğrulama, testler ve build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu çek
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: pnpm kurulumu
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Node.js kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: 'pnpm'
+
+      - name: Bağımlılıkları kur (kilitli lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Konum verisini içe aktar / doğrula
+        run: pnpm locations:import
+
+      - name: Prettier biçim kontrolü
+        run: pnpm format:check
+
+      - name: ESLint
+        run: pnpm lint
+
+      - name: Astro / TypeScript tip kontrolü
+        run: pnpm exec astro check
+
+      - name: İçerik şeması ve kaynak atıf doğrulaması
+        run: pnpm content:validate
+
+      - name: Vitest birim testleri
+        run: pnpm test
+
+      # `pnpm build` şu adımları zincirleme çalıştırır: robots.txt/ads.txt/_headers
+      # üretimi → görsel optimizasyonu → astro check → astro build → Pagefind
+      # indeksi → iç bağlantı kontrolü (links:check) → dosya sayısı kontrolü
+      # (output:check). Ayrı bir "broken link check" veya "file count check"
+      # adımına gerek yoktur — bu build script'inin bir parçasıdır.
+      - name: Üretim build'i (robots/ads.txt/_headers, Pagefind, link ve dosya sayısı kontrolü dahil)
+        run: pnpm build
+        env:
+          # CI'da AdSense/GA4/Cloudflare Analytics her zaman kapalı kalır — bu,
+          # projenin varsayılan (ve beklenen) güvenli durumudur.
+          PUBLIC_BUILD_ENV: production
+
+      - name: Playwright tarayıcılarını kur
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Playwright uçtan uca testleri (erişilebilirlik/axe-core taramaları dahil)
+        run: pnpm test:e2e
+
+      - name: Playwright raporunu artefakt olarak yükle (yalnızca hata durumunda)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

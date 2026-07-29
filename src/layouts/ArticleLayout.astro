@@ -1,0 +1,325 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/common/Container.astro';
+import Breadcrumbs, { type BreadcrumbItem } from '../components/common/Breadcrumbs.astro';
+import ResponsiveImage from '../components/common/ResponsiveImage.astro';
+import ShareButtons from '../components/common/ShareButtons.astro';
+import ArticleHeader from '../components/article/ArticleHeader.astro';
+import AnswerBox from '../components/article/AnswerBox.astro';
+import KeyTakeaways from '../components/article/KeyTakeaways.astro';
+import TableOfContents, { type HeadingItem } from '../components/article/TableOfContents.astro';
+import SourcesList from '../components/article/SourcesList.astro';
+import CorrectionHistory from '../components/article/CorrectionHistory.astro';
+import AuthorBox from '../components/article/AuthorBox.astro';
+import ReviewerBox from '../components/article/ReviewerBox.astro';
+import RelatedContent from '../components/article/RelatedContent.astro';
+import LocationSummary from '../components/article/LocationSummary.astro';
+import UpdateNotice from '../components/article/UpdateNotice.astro';
+import SponsorDisclosure from '../components/ads/SponsorDisclosure.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
+import { estimateReadingTimeMinutes } from '../lib/reading-time';
+import { absoluteUrl } from '../lib/urls';
+import type { AuthorSummary, ContentSummary } from '../lib/content';
+import type { ResolvedLocation } from '../lib/locations';
+
+interface SourceItem {
+  key: string;
+  organization: string;
+  title: string;
+  url: string;
+  publishedAt?: Date;
+  accessedAt?: Date;
+  official?: boolean;
+  note?: string;
+}
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface LocationBlock {
+  location: ResolvedLocation;
+  propertyFocus: 'housing' | 'land' | 'mixed';
+  riskLevel?: string;
+  investmentHorizon?: string;
+}
+
+interface Props {
+  collectionLabel: string;
+  collectionHref: string;
+  title: string;
+  excerpt: string;
+  quickAnswer?: string;
+  keyTakeaways: string[];
+  coverImage?: string;
+  coverAlt?: string;
+  coverCaption?: string;
+  author: AuthorSummary;
+  reviewer?: AuthorSummary;
+  publishedAt: Date;
+  updatedAt?: Date;
+  sources: SourceItem[];
+  sourceUsageOrder: string[];
+  faq: FaqItem[];
+  methodology?: string;
+  corrections: { date: Date; description: string }[];
+  sponsorship?: { sponsored?: boolean; sponsorName?: string; disclosure?: string };
+  breadcrumbItems: BreadcrumbItem[];
+  path: string;
+  canonicalOverride?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+  titleOverride?: string;
+  descriptionOverride?: string;
+  ogImageOverride?: string;
+  bodyRawText: string;
+  headings: HeadingItem[];
+  relatedContent: ContentSummary[];
+  locationBlock?: LocationBlock;
+  jsonLd?: object[];
+  adsCategory?: string;
+  adsProvinceSlug?: string;
+  adsDistrictSlug?: string;
+}
+
+const {
+  collectionLabel,
+  collectionHref,
+  title,
+  excerpt,
+  quickAnswer,
+  keyTakeaways,
+  coverImage,
+  coverAlt,
+  coverCaption,
+  author,
+  reviewer,
+  publishedAt,
+  updatedAt,
+  sources,
+  sourceUsageOrder,
+  faq,
+  methodology,
+  corrections,
+  sponsorship,
+  breadcrumbItems,
+  path,
+  canonicalOverride,
+  noindex,
+  nofollow,
+  titleOverride,
+  descriptionOverride,
+  ogImageOverride,
+  bodyRawText,
+  headings,
+  relatedContent,
+  locationBlock,
+  jsonLd,
+  adsCategory,
+  adsProvinceSlug,
+  adsDistrictSlug,
+} = Astro.props;
+
+const readingTimeMinutes = estimateReadingTimeMinutes(bodyRawText);
+const canonicalUrl = absoluteUrl(canonicalOverride ?? path);
+---
+
+<BaseLayout
+  title={title}
+  titleOverride={titleOverride}
+  descriptionOverride={descriptionOverride}
+  excerpt={excerpt}
+  quickAnswer={quickAnswer}
+  path={path}
+  canonicalOverride={canonicalOverride}
+  noindex={noindex}
+  nofollow={nofollow}
+  ogImage={ogImageOverride ?? coverImage}
+  type="article"
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+  jsonLd={jsonLd}
+>
+  <Container as="article" narrow class="article-page">
+    <Breadcrumbs items={breadcrumbItems} />
+
+    <ArticleHeader
+      categoryLabel={collectionLabel}
+      categoryHref={collectionHref}
+      title={title}
+      authorName={author.name}
+      authorHref={author.url}
+      reviewerName={reviewer?.name}
+      reviewerHref={reviewer?.url}
+      publishedAt={publishedAt}
+      updatedAt={updatedAt}
+      readingTimeMinutes={readingTimeMinutes}
+    />
+
+    <p class="article-lede">{excerpt}</p>
+
+    {
+      sponsorship?.sponsored && sponsorship.sponsorName && sponsorship.disclosure && (
+        <SponsorDisclosure
+          sponsorName={sponsorship.sponsorName}
+          disclosure={sponsorship.disclosure}
+        />
+      )
+    }
+
+    <UpdateNotice publishedAt={publishedAt} updatedAt={updatedAt} />
+
+    {
+      coverImage && (
+        <ResponsiveImage
+          src={coverImage}
+          alt={coverAlt ?? ''}
+          caption={coverCaption}
+          sizes="(min-width: 48rem) 704px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )
+    }
+
+    {quickAnswer && <AnswerBox answer={quickAnswer} />}
+
+    <KeyTakeaways items={keyTakeaways} />
+
+    {
+      locationBlock && (
+        <LocationSummary
+          location={locationBlock.location}
+          propertyFocus={locationBlock.propertyFocus}
+          riskLevel={locationBlock.riskLevel}
+          investmentHorizon={locationBlock.investmentHorizon}
+          publishedAt={publishedAt}
+          updatedAt={updatedAt}
+        />
+      )
+    }
+
+    <TableOfContents headings={headings} />
+
+    <div class="article-body" data-pagefind-body>
+      <span
+        class="visually-hidden"
+        data-pagefind-filter={`icerik-turu:${collectionLabel}`}
+        data-pagefind-meta={`icerik-turu:${collectionLabel}`}></span>
+      <span class="visually-hidden" data-pagefind-meta={`yazar:${author.name}`}></span>
+      <slot />
+    </div>
+
+    {
+      faq.length > 0 && (
+        <section class="article-faq" aria-labelledby="faq-heading">
+          <h2 id="faq-heading">Sık sorulan sorular</h2>
+          {faq.map((item) => (
+            <details class="faq-item">
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      methodology && (
+        <section class="article-methodology" aria-labelledby="methodology-heading">
+          <h2 id="methodology-heading">Metodoloji</h2>
+          <p>{methodology}</p>
+        </section>
+      )
+    }
+
+    <SourcesList sources={sources} usageOrder={sourceUsageOrder} />
+
+    <CorrectionHistory corrections={corrections} />
+
+    <p class="article-disclaimer">
+      Bu içerik yatırım danışmanlığı, hukuki danışmanlık veya değerleme raporu yerine geçmez. İşlem
+      öncesi tapu, imar ve belediye kayıtlarını ilgili resmî kurumlardan doğrulayın.
+      <a href="/sorumluluk-reddi/">Sorumluluk reddini okuyun</a>.
+    </p>
+
+    <div class="article-people">
+      <AuthorBox
+        name={author.name}
+        role={author.role}
+        bio={author.bio}
+        avatar={author.avatar}
+        href={author.url}
+      />
+      {
+        reviewer && (
+          <ReviewerBox
+            name={reviewer.name}
+            role={reviewer.role}
+            bio={reviewer.bio}
+            avatar={reviewer.avatar}
+            href={reviewer.url}
+          />
+        )
+      }
+    </div>
+
+    <RelatedContent items={relatedContent} />
+
+    <div class="article-footer-row">
+      <ShareButtons url={canonicalUrl} title={title} />
+    </div>
+
+    <AdSlot
+      placement="article-bottom"
+      category={adsCategory}
+      provinceSlug={adsProvinceSlug}
+      districtSlug={adsDistrictSlug}
+      adsenseSlotId={import.meta.env.PUBLIC_ADSENSE_SLOT_ARTICLE_BOTTOM}
+    />
+  </Container>
+</BaseLayout>
+
+<style>
+  .article-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .article-lede {
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    max-width: 70ch;
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+    padding-block: var(--space-3);
+  }
+  .faq-item summary {
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .faq-item p {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+  }
+  .article-disclaimer {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    background-color: var(--color-surface-muted);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    max-width: none;
+  }
+  .article-people {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  }
+  .article-footer-row {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+import { getImageData, buildSrcset, getLargestVariant } from '../../lib/images';
+
+interface Props {
+  src: string;
+  alt: string;
+  sizes?: string;
+  loading?: 'eager' | 'lazy';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
+  caption?: string;
+}
+
+const {
+  src,
+  alt,
+  sizes = '100vw',
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  class: className,
+  caption,
+} = Astro.props;
+
+const imageData = getImageData(src);
+const largest = imageData ? getLargestVariant(imageData) : undefined;
+const srcset = imageData ? buildSrcset(imageData) : undefined;
+const fallbackSrc = largest?.path ?? src;
+const width = imageData?.width;
+const height = imageData?.height;
+---
+
+<figure class:list={['responsive-image', className]}>
+  <img
+    src={fallbackSrc}
+    srcset={srcset}
+    sizes={srcset ? sizes : undefined}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    fetchpriority={fetchpriority}
+  />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .responsive-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+  }
+  .responsive-image figcaption {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-2);
+  }
+</style>

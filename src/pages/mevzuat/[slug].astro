@@ -1,0 +1,98 @@
+---
+import { getEntry, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import {
+  getPublishedEntries,
+  getEntrySlug,
+  getAllPublishedSummaries,
+  getRelatedContent,
+  toAuthorSummary,
+  assertPublished,
+  COLLECTION_LABELS_TR,
+} from '../../lib/content';
+import { getContentPath } from '../../lib/urls';
+import { buildArticleSchema, buildFaqSchema } from '../../lib/schema';
+
+const COLLECTION = 'mevzuat';
+
+export async function getStaticPaths() {
+  const entries = await getPublishedEntries('mevzuat');
+  return entries.map((entry) => ({ params: { slug: getEntrySlug(entry) }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+assertPublished(entry.data);
+
+const slug = getEntrySlug(entry);
+const path = getContentPath(COLLECTION, slug);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+
+const author = await getEntry(entry.data.author);
+const reviewer = entry.data.reviewedBy ? await getEntry(entry.data.reviewedBy) : undefined;
+
+const allSummaries = await getAllPublishedSummaries();
+const currentSummary = allSummaries.find((s) => s.collection === COLLECTION && s.slug === slug);
+const relatedContent = currentSummary ? getRelatedContent(currentSummary, allSummaries) : [];
+
+const articleSchema = buildArticleSchema({
+  headline: entry.data.title,
+  description: entry.data.excerpt,
+  path,
+  image: entry.data.coverImage,
+  datePublished: entry.data.publishedAt,
+  dateModified: entry.data.updatedAt,
+  author: {
+    name: author.data.name,
+    slug: author.id,
+    role: author.data.role,
+    avatar: author.data.avatar,
+  },
+  reviewer: reviewer
+    ? { name: reviewer.data.name, slug: reviewer.id, role: reviewer.data.role }
+    : undefined,
+  section: COLLECTION_LABELS_TR[COLLECTION],
+  keywords: entry.data.tags,
+});
+const faqSchema = buildFaqSchema(entry.data.faq);
+const jsonLd = [articleSchema, ...(faqSchema ? [faqSchema] : [])];
+---
+
+<ArticleLayout
+  collectionLabel={COLLECTION_LABELS_TR[COLLECTION]}
+  collectionHref="/mevzuat/"
+  title={entry.data.title}
+  excerpt={entry.data.excerpt}
+  quickAnswer={entry.data.quickAnswer}
+  keyTakeaways={entry.data.keyTakeaways}
+  coverImage={entry.data.coverImage}
+  coverAlt={entry.data.coverAlt}
+  coverCaption={entry.data.coverCaption}
+  author={toAuthorSummary(author)}
+  reviewer={reviewer ? toAuthorSummary(reviewer) : undefined}
+  publishedAt={entry.data.publishedAt}
+  updatedAt={entry.data.updatedAt}
+  sources={entry.data.sources}
+  sourceUsageOrder={remarkPluginFrontmatter.sourceUsageOrder ?? []}
+  faq={entry.data.faq}
+  methodology={entry.data.methodology}
+  corrections={entry.data.corrections}
+  sponsorship={entry.data.sponsorship}
+  breadcrumbItems={[
+    { label: COLLECTION_LABELS_TR[COLLECTION], path: '/mevzuat/' },
+    { label: entry.data.title, path },
+  ]}
+  path={path}
+  canonicalOverride={entry.data.seo?.canonicalOverride}
+  noindex={entry.data.seo?.noindex}
+  nofollow={entry.data.seo?.nofollow}
+  titleOverride={entry.data.seo?.titleOverride}
+  descriptionOverride={entry.data.seo?.descriptionOverride}
+  ogImageOverride={entry.data.seo?.ogImageOverride}
+  bodyRawText={entry.body ?? ''}
+  headings={headings}
+  relatedContent={relatedContent}
+  jsonLd={jsonLd}
+  adsCategory={COLLECTION}
+>
+  <Content />
+</ArticleLayout>

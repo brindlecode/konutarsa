@@ -1,0 +1,169 @@
+/**
+ * KonutArsa tasarım tokenları. Tek kaynak: renk, tipografi, boşluk, kırılım
+ * noktası ve hareket değerleri burada tanımlanır; bileşenler bu değişkenleri
+ * kullanır, kendi renk sabiti tanımlamaz.
+ */
+:root {
+  color-scheme: light;
+
+  /* --- Marka (koyu lacivert) --- */
+  --color-brand-900: #0a1d30;
+  --color-brand-800: #0f2c47;
+  --color-brand-700: #163d61;
+  --color-brand-600: #1f4d79;
+  --color-brand-500: #3068a0;
+  --color-brand-100: #e3ecf3;
+
+  /* --- Yüzeyler (kırık beyaz / sıcak gri) --- */
+  --color-surface: #fbfaf6;
+  --color-surface-alt: #ffffff;
+  --color-surface-muted: #f0ede4;
+  --color-surface-inverse: var(--color-brand-900);
+
+  /* --- Metin --- */
+  --color-text: #1b1f24;
+  --color-text-muted: #555f6b;
+  --color-text-inverse: #f7f8fa;
+  --color-text-inverse-muted: #c3ccd6;
+
+  /* --- Kenarlık --- */
+  --color-border: #ddd6c8;
+  --color-border-strong: #b9b1a0;
+
+  /* --- Durum renkleri --- */
+  --color-success: #1e7a4c;
+  --color-success-bg: #e6f2ea;
+  --color-success-border: #b8dcc4;
+  --color-warning: #8a5a08;
+  --color-warning-bg: #fbf0dc;
+  --color-warning-border: #edd39b;
+  --color-danger: #a4281f;
+  --color-danger-bg: #fbe9e7;
+  --color-danger-border: #eec4bf;
+
+  /* --- Bağlantılar / odak --- */
+  --color-link: var(--color-brand-700);
+  --color-link-hover: var(--color-brand-800);
+  --color-focus-ring: #1a73c7;
+
+  /* --- Tipografi: yalnızca sistem fontları --- */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 2.75rem;
+
+  --leading-tight: 1.25;
+  --leading-snug: 1.4;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  /* --- Boşluk skalası --- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* --- Köşe / gölge --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 32, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 23, 32, 0.1);
+
+  /* --- Yerleşim --- */
+  --content-max-width: 44rem;
+  --page-max-width: 80rem;
+  --header-height: 4rem;
+
+  /* --- Hareket --- */
+  --transition-fast: 120ms ease;
+  --transition-base: 200ms ease;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --color-surface: #12161c;
+    --color-surface-alt: #191f27;
+    --color-surface-muted: #1d242e;
+    --color-surface-inverse: #060b12;
+
+    --color-text: #edf0f3;
+    --color-text-muted: #a7b0bd;
+    --color-text-inverse: #edf0f3;
+    --color-text-inverse-muted: #a7b0bd;
+
+    --color-border: #2b323d;
+    --color-border-strong: #3c4552;
+
+    --color-success: #55b98a;
+    --color-success-bg: #16281f;
+    --color-success-border: #234634;
+    --color-warning: #e0a942;
+    --color-warning-bg: #2c2413;
+    --color-warning-border: #493a1c;
+    --color-danger: #e2685e;
+    --color-danger-bg: #2c1917;
+    --color-danger-border: #4a2723;
+
+    --color-link: #7fb1e8;
+    --color-link-hover: #a3c8f2;
+    --color-focus-ring: #7fb1e8;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-surface: #12161c;
+  --color-surface-alt: #191f27;
+  --color-surface-muted: #1d242e;
+  --color-surface-inverse: #060b12;
+  --color-text: #edf0f3;
+  --color-text-muted: #a7b0bd;
+  --color-text-inverse: #edf0f3;
+  --color-text-inverse-muted: #a7b0bd;
+  --color-border: #2b323d;
+  --color-border-strong: #3c4552;
+  --color-success: #55b98a;
+  --color-success-bg: #16281f;
+  --color-success-border: #234634;
+  --color-warning: #e0a942;
+  --color-warning-bg: #2c2413;
+  --color-warning-border: #493a1c;
+  --color-danger: #e2685e;
+  --color-danger-bg: #2c1917;
+  --color-danger-border: #4a2723;
+  --color-link: #7fb1e8;
+  --color-link-hover: #a3c8f2;
+  --color-focus-ring: #7fb1e8;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --color-surface: #fbfaf6;
+  --color-surface-alt: #ffffff;
+  --color-surface-muted: #f0ede4;
+  --color-surface-inverse: var(--color-brand-900);
+  --color-text: #1b1f24;
+  --color-text-muted: #555f6b;
+  --color-border: #ddd6c8;
+  --color-border-strong: #b9b1a0;
+  --color-link: var(--color-brand-700);
+  --color-link-hover: var(--color-brand-800);
+  --color-focus-ring: #1a73c7;
+}

@@ -1,0 +1,15 @@
+# KonutArsa — Cloudflare Pages yönlendirmeleri (bkz. madde 14.10, SEO_OPERATIONS_TR.md)
+#
+# Format:  <eski-yol>  <yeni-yol>  <durum-kodu>
+# Örnek:   /eski-rehber-sayfasi/  /konut-rehberi/yeni-slug/  301
+#
+# Kurallar:
+# - Bir içeriğin slug'ını değiştirdiğinizde, eski URL için buraya bir 301
+#   satırı ekleyin; aksi hâlde eski bağlantılar 404 verir.
+# - Zincirleme yönlendirme oluşturmayın (A → B → C yerine doğrudan A → C).
+# - Döngü oluşturmayın (A → B → A).
+# - Çok sayıda 404'ü toplu olarak ana sayfaya yönlendirmeyin — her 404 kendi
+#   bağlamında ele alınmalı (bkz. 404 sayfası: arama + kategori bağlantıları).
+#
+# Şu anda etkin bir yönlendirme yoktur; bu dosya ileride slug değişikliklerinde
+# kullanılmak üzere hazır tutulur.

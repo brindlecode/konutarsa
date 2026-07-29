@@ -1,0 +1,48 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+}
+const { title, description, href } = Astro.props;
+---
+
+<a href={href} class="category-card card">
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <span class="category-card-cta" aria-hidden="true">İncele →</span>
+</a>
+
+<style>
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    color: var(--color-text);
+    height: 100%;
+    transition:
+      transform var(--transition-fast),
+      border-color var(--transition-fast);
+  }
+  .category-card:hover {
+    color: var(--color-text);
+    border-color: var(--color-brand-500);
+    transform: translateY(-2px);
+  }
+  .category-card h3 {
+    font-size: var(--text-md);
+  }
+  .category-card p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    max-width: none;
+  }
+  .category-card-cta {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--color-brand-700);
+  }
+</style>

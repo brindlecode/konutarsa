@@ -1,0 +1,16 @@
+---
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.collection === 'bolge-analizleri');
+---
+
+<CategoryLayout
+  title="Bölge Analizleri"
+  description="İl, ilçe ve mahalle bazlı araştırma rehberleri. Yalnızca yayımlanmış özgün içeriği olan bölgeler için sayfa oluşturulur; 32.311 mahallenin tamamı için otomatik sayfa üretilmez."
+  path="/bolge-analizleri/"
+  items={items}
+  breadcrumbItems={[{ label: 'Bölge Analizleri', path: '/bolge-analizleri/' }]}
+  emptyMessage="Bu bölüm için bölge analizleri hazırlanıyor. Konum bulucu aracıyla ilgilendiğiniz bölgeyi şimdiden keşfedebilirsiniz."
+/>

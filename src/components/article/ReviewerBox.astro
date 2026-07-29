@@ -1,0 +1,22 @@
+---
+import AuthorBox from './AuthorBox.astro';
+
+interface Props {
+  name: string;
+  role?: string;
+  bio?: string;
+  avatar?: string;
+  href: string;
+}
+
+const { name, role, bio, avatar, href } = Astro.props;
+---
+
+<AuthorBox
+  name={name}
+  role={role}
+  bio={bio}
+  avatar={avatar}
+  href={href}
+  heading="Gözden geçiren editör"
+/>

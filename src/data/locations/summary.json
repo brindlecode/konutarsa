@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-07-29T20:25:16.706Z",
+  "sourceFile": "Turkiye_Il_Ilce_Mahalle_Listesi_2026.xlsx",
+  "sourceFileSha256_16": "9b8e452494814ef9",
+  "sourceFileSizeBytes": 1448595,
+  "counts": {
+    "provinces": 81,
+    "officialDistricts": 922,
+    "provinceCenters": 51,
+    "districtGroups": 973,
+    "neighborhoods": 32311
+  },
+  "expected": {
+    "provinces": 81,
+    "officialDistricts": 922,
+    "provinceCenters": 51,
+    "districtGroups": 973,
+    "neighborhoods": 32311
+  },
+  "checksPassed": true,
+  "duplicateExactRowCount": 11,
+  "duplicateExactRows": [
+    {
+      "id": "m-004448",
+      "sourceOrder": 4448,
+      "key": "AYDIN|EFELER|EFELER-İLÇE MERKEZİ|YENİKÖY",
+      "firstSeenId": "m-004437"
+    },
+    {
+      "id": "m-013582",
+      "sourceOrder": 13582,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|AYGIRGÖLÜ",
+      "firstSeenId": "m-013558"
+    },
+    {
+      "id": "m-013583",
+      "sourceOrder": 13583,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|CAMUZKIŞLASI",
+      "firstSeenId": "m-013559"
+    },
+    {
+      "id": "m-013584",
+      "sourceOrder": 13584,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|ÇAMSARI",
+      "firstSeenId": "m-013557"
+    },
+    {
+      "id": "m-013585",
+      "sourceOrder": 13585,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|DEMİRKONAK",
+      "firstSeenId": "m-013560"
+    },
+    {
+      "id": "m-013586",
+      "sourceOrder": 13586,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|GÜLTEPE",
+      "firstSeenId": "m-013561"
+    },
+    {
+      "id": "m-013587",
+      "sourceOrder": 13587,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|İNCİRLİ",
+      "firstSeenId": "m-013562"
+    },
+    {
+      "id": "m-013588",
+      "sourceOrder": 13588,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|KALETEPE",
+      "firstSeenId": "m-013563"
+    },
+    {
+      "id": "m-013589",
+      "sourceOrder": 13589,
+      "key": "HATAY|KIRIKHAN|KIRIKHAN- İLÇE MERKEZİ|YALANGOZ",
+      "firstSeenId": "m-013564"
+    },
+    {
+      "id": "m-024716",
+      "sourceOrder": 24716,
+      "key": "ORDU|ALTINORDU|ALTINORDU-İLÇE MERKEZİ|GÜZELYALI",
+      "firstSeenId": "m-024649"
+    },
+    {
+      "id": "m-025190",
+      "sourceOrder": 25190,
+      "key": "ORDU|MESUDİYE|MESUDİYE-İLÇE MERKEZİ|KAYADİBİ",
+      "firstSeenId": "m-025185"
+    }
+  ],
+  "provinceFilesWritten": 81
+}

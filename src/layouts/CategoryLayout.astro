@@ -1,0 +1,86 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/common/Container.astro';
+import Breadcrumbs, { type BreadcrumbItem } from '../components/common/Breadcrumbs.astro';
+import ArticleCard from '../components/cards/ArticleCard.astro';
+import EmptyState from '../components/common/EmptyState.astro';
+import Pagination from '../components/common/Pagination.astro';
+import type { ContentSummary } from '../lib/content';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  items: ContentSummary[];
+  breadcrumbItems: BreadcrumbItem[];
+  currentPage?: number;
+  totalPages?: number;
+  basePath?: string;
+  noindex?: boolean;
+  emptyMessage?: string;
+}
+
+const {
+  title,
+  description,
+  path,
+  items,
+  breadcrumbItems,
+  currentPage = 1,
+  totalPages = 1,
+  basePath,
+  noindex,
+  emptyMessage,
+} = Astro.props;
+---
+
+<BaseLayout title={title} descriptionOverride={description} path={path} noindex={noindex}>
+  <Container class="category-page">
+    <Breadcrumbs items={breadcrumbItems} />
+    <header class="category-header">
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </header>
+
+    {
+      items.length > 0 ? (
+        <div class="category-grid">
+          {items.map((item) => (
+            <ArticleCard item={item} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState message={emptyMessage} />
+      )
+    }
+
+    {
+      basePath && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} basePath={basePath} />
+      )
+    }
+  </Container>
+</BaseLayout>
+
+<style>
+  .category-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .category-header {
+    max-width: 60ch;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .category-header p {
+    color: var(--color-text-muted);
+  }
+  .category-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  }
+</style>

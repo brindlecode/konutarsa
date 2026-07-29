@@ -1,0 +1,731 @@
+[
+  {
+    "id": "province:adana",
+    "reference": "province:adana",
+    "name": "Adana",
+    "slug": "adana",
+    "districtCount": 15,
+    "neighborhoodCount": 831,
+    "sourceOrder": 1
+  },
+  {
+    "id": "province:adiyaman",
+    "reference": "province:adiyaman",
+    "name": "Adıyaman",
+    "slug": "adiyaman",
+    "districtCount": 9,
+    "neighborhoodCount": 176,
+    "sourceOrder": 2
+  },
+  {
+    "id": "province:afyonkarahisar",
+    "reference": "province:afyonkarahisar",
+    "name": "Afyonkarahisar",
+    "slug": "afyonkarahisar",
+    "districtCount": 18,
+    "neighborhoodCount": 431,
+    "sourceOrder": 3
+  },
+  {
+    "id": "province:aksaray",
+    "reference": "province:aksaray",
+    "name": "Aksaray",
+    "slug": "aksaray",
+    "districtCount": 8,
+    "neighborhoodCount": 159,
+    "sourceOrder": 4
+  },
+  {
+    "id": "province:amasya",
+    "reference": "province:amasya",
+    "name": "Amasya",
+    "slug": "amasya",
+    "districtCount": 7,
+    "neighborhoodCount": 107,
+    "sourceOrder": 5
+  },
+  {
+    "id": "province:ankara",
+    "reference": "province:ankara",
+    "name": "Ankara",
+    "slug": "ankara",
+    "districtCount": 25,
+    "neighborhoodCount": 1427,
+    "sourceOrder": 6
+  },
+  {
+    "id": "province:antalya",
+    "reference": "province:antalya",
+    "name": "Antalya",
+    "slug": "antalya",
+    "districtCount": 19,
+    "neighborhoodCount": 914,
+    "sourceOrder": 7
+  },
+  {
+    "id": "province:ardahan",
+    "reference": "province:ardahan",
+    "name": "Ardahan",
+    "slug": "ardahan",
+    "districtCount": 6,
+    "neighborhoodCount": 35,
+    "sourceOrder": 8
+  },
+  {
+    "id": "province:artvin",
+    "reference": "province:artvin",
+    "name": "Artvin",
+    "slug": "artvin",
+    "districtCount": 9,
+    "neighborhoodCount": 41,
+    "sourceOrder": 9
+  },
+  {
+    "id": "province:aydin",
+    "reference": "province:aydin",
+    "name": "Aydın",
+    "slug": "aydin",
+    "districtCount": 17,
+    "neighborhoodCount": 671,
+    "sourceOrder": 10
+  },
+  {
+    "id": "province:agri",
+    "reference": "province:agri",
+    "name": "Ağrı",
+    "slug": "agri",
+    "districtCount": 8,
+    "neighborhoodCount": 102,
+    "sourceOrder": 11
+  },
+  {
+    "id": "province:balikesir",
+    "reference": "province:balikesir",
+    "name": "Balıkesir",
+    "slug": "balikesir",
+    "districtCount": 20,
+    "neighborhoodCount": 1135,
+    "sourceOrder": 12
+  },
+  {
+    "id": "province:bartin",
+    "reference": "province:bartin",
+    "name": "Bartın",
+    "slug": "bartin",
+    "districtCount": 4,
+    "neighborhoodCount": 55,
+    "sourceOrder": 13
+  },
+  {
+    "id": "province:batman",
+    "reference": "province:batman",
+    "name": "Batman",
+    "slug": "batman",
+    "districtCount": 6,
+    "neighborhoodCount": 137,
+    "sourceOrder": 14
+  },
+  {
+    "id": "province:bayburt",
+    "reference": "province:bayburt",
+    "name": "Bayburt",
+    "slug": "bayburt",
+    "districtCount": 3,
+    "neighborhoodCount": 28,
+    "sourceOrder": 15
+  },
+  {
+    "id": "province:bolu",
+    "reference": "province:bolu",
+    "name": "Bolu",
+    "slug": "bolu",
+    "districtCount": 9,
+    "neighborhoodCount": 97,
+    "sourceOrder": 16
+  },
+  {
+    "id": "province:burdur",
+    "reference": "province:burdur",
+    "name": "Burdur",
+    "slug": "burdur",
+    "districtCount": 11,
+    "neighborhoodCount": 130,
+    "sourceOrder": 17
+  },
+  {
+    "id": "province:bursa",
+    "reference": "province:bursa",
+    "name": "Bursa",
+    "slug": "bursa",
+    "districtCount": 17,
+    "neighborhoodCount": 1060,
+    "sourceOrder": 18
+  },
+  {
+    "id": "province:bilecik",
+    "reference": "province:bilecik",
+    "name": "Bilecik",
+    "slug": "bilecik",
+    "districtCount": 8,
+    "neighborhoodCount": 64,
+    "sourceOrder": 19
+  },
+  {
+    "id": "province:bingol",
+    "reference": "province:bingol",
+    "name": "Bingöl",
+    "slug": "bingol",
+    "districtCount": 8,
+    "neighborhoodCount": 76,
+    "sourceOrder": 20
+  },
+  {
+    "id": "province:bitlis",
+    "reference": "province:bitlis",
+    "name": "Bitlis",
+    "slug": "bitlis",
+    "districtCount": 7,
+    "neighborhoodCount": 124,
+    "sourceOrder": 21
+  },
+  {
+    "id": "province:denizli",
+    "reference": "province:denizli",
+    "name": "Denizli",
+    "slug": "denizli",
+    "districtCount": 19,
+    "neighborhoodCount": 616,
+    "sourceOrder": 22
+  },
+  {
+    "id": "province:duzce",
+    "reference": "province:duzce",
+    "name": "Düzce",
+    "slug": "duzce",
+    "districtCount": 8,
+    "neighborhoodCount": 126,
+    "sourceOrder": 23
+  },
+  {
+    "id": "province:diyarbakir",
+    "reference": "province:diyarbakir",
+    "name": "Diyarbakır",
+    "slug": "diyarbakir",
+    "districtCount": 17,
+    "neighborhoodCount": 1057,
+    "sourceOrder": 24
+  },
+  {
+    "id": "province:edirne",
+    "reference": "province:edirne",
+    "name": "Edirne",
+    "slug": "edirne",
+    "districtCount": 9,
+    "neighborhoodCount": 100,
+    "sourceOrder": 25
+  },
+  {
+    "id": "province:elazig",
+    "reference": "province:elazig",
+    "name": "Elazığ",
+    "slug": "elazig",
+    "districtCount": 11,
+    "neighborhoodCount": 157,
+    "sourceOrder": 26
+  },
+  {
+    "id": "province:erzurum",
+    "reference": "province:erzurum",
+    "name": "Erzurum",
+    "slug": "erzurum",
+    "districtCount": 20,
+    "neighborhoodCount": 1189,
+    "sourceOrder": 27
+  },
+  {
+    "id": "province:erzincan",
+    "reference": "province:erzincan",
+    "name": "Erzincan",
+    "slug": "erzincan",
+    "districtCount": 9,
+    "neighborhoodCount": 160,
+    "sourceOrder": 28
+  },
+  {
+    "id": "province:eskisehir",
+    "reference": "province:eskisehir",
+    "name": "Eskişehir",
+    "slug": "eskisehir",
+    "districtCount": 14,
+    "neighborhoodCount": 540,
+    "sourceOrder": 29
+  },
+  {
+    "id": "province:gaziantep",
+    "reference": "province:gaziantep",
+    "name": "Gaziantep",
+    "slug": "gaziantep",
+    "districtCount": 9,
+    "neighborhoodCount": 740,
+    "sourceOrder": 30
+  },
+  {
+    "id": "province:gumushane",
+    "reference": "province:gumushane",
+    "name": "Gümüşhane",
+    "slug": "gumushane",
+    "districtCount": 6,
+    "neighborhoodCount": 85,
+    "sourceOrder": 31
+  },
+  {
+    "id": "province:giresun",
+    "reference": "province:giresun",
+    "name": "Giresun",
+    "slug": "giresun",
+    "districtCount": 16,
+    "neighborhoodCount": 209,
+    "sourceOrder": 32
+  },
+  {
+    "id": "province:hakkari",
+    "reference": "province:hakkari",
+    "name": "Hakkari",
+    "slug": "hakkari",
+    "districtCount": 5,
+    "neighborhoodCount": 57,
+    "sourceOrder": 33
+  },
+  {
+    "id": "province:hatay",
+    "reference": "province:hatay",
+    "name": "Hatay",
+    "slug": "hatay",
+    "districtCount": 15,
+    "neighborhoodCount": 609,
+    "sourceOrder": 34
+  },
+  {
+    "id": "province:isparta",
+    "reference": "province:isparta",
+    "name": "Isparta",
+    "slug": "isparta",
+    "districtCount": 13,
+    "neighborhoodCount": 213,
+    "sourceOrder": 35
+  },
+  {
+    "id": "province:igdir",
+    "reference": "province:igdir",
+    "name": "Iğdır",
+    "slug": "igdir",
+    "districtCount": 4,
+    "neighborhoodCount": 37,
+    "sourceOrder": 36
+  },
+  {
+    "id": "province:kahramanmaras",
+    "reference": "province:kahramanmaras",
+    "name": "Kahramanmaraş",
+    "slug": "kahramanmaras",
+    "districtCount": 11,
+    "neighborhoodCount": 720,
+    "sourceOrder": 37
+  },
+  {
+    "id": "province:karabuk",
+    "reference": "province:karabuk",
+    "name": "Karabük",
+    "slug": "karabuk",
+    "districtCount": 6,
+    "neighborhoodCount": 80,
+    "sourceOrder": 38
+  },
+  {
+    "id": "province:karaman",
+    "reference": "province:karaman",
+    "name": "Karaman",
+    "slug": "karaman",
+    "districtCount": 6,
+    "neighborhoodCount": 132,
+    "sourceOrder": 39
+  },
+  {
+    "id": "province:kars",
+    "reference": "province:kars",
+    "name": "Kars",
+    "slug": "kars",
+    "districtCount": 8,
+    "neighborhoodCount": 57,
+    "sourceOrder": 40
+  },
+  {
+    "id": "province:kastamonu",
+    "reference": "province:kastamonu",
+    "name": "Kastamonu",
+    "slug": "kastamonu",
+    "districtCount": 20,
+    "neighborhoodCount": 174,
+    "sourceOrder": 41
+  },
+  {
+    "id": "province:kayseri",
+    "reference": "province:kayseri",
+    "name": "Kayseri",
+    "slug": "kayseri",
+    "districtCount": 16,
+    "neighborhoodCount": 718,
+    "sourceOrder": 42
+  },
+  {
+    "id": "province:kirikkale",
+    "reference": "province:kirikkale",
+    "name": "Kırıkkale",
+    "slug": "kirikkale",
+    "districtCount": 9,
+    "neighborhoodCount": 88,
+    "sourceOrder": 43
+  },
+  {
+    "id": "province:kirklareli",
+    "reference": "province:kirklareli",
+    "name": "Kırklareli",
+    "slug": "kirklareli",
+    "districtCount": 8,
+    "neighborhoodCount": 109,
+    "sourceOrder": 44
+  },
+  {
+    "id": "province:kirsehir",
+    "reference": "province:kirsehir",
+    "name": "Kırşehir",
+    "slug": "kirsehir",
+    "districtCount": 7,
+    "neighborhoodCount": 67,
+    "sourceOrder": 45
+  },
+  {
+    "id": "province:kocaeli",
+    "reference": "province:kocaeli",
+    "name": "Kocaeli",
+    "slug": "kocaeli",
+    "districtCount": 12,
+    "neighborhoodCount": 472,
+    "sourceOrder": 46
+  },
+  {
+    "id": "province:konya",
+    "reference": "province:konya",
+    "name": "Konya",
+    "slug": "konya",
+    "districtCount": 31,
+    "neighborhoodCount": 1139,
+    "sourceOrder": 47
+  },
+  {
+    "id": "province:kutahya",
+    "reference": "province:kutahya",
+    "name": "Kütahya",
+    "slug": "kutahya",
+    "districtCount": 13,
+    "neighborhoodCount": 233,
+    "sourceOrder": 48
+  },
+  {
+    "id": "province:kilis",
+    "reference": "province:kilis",
+    "name": "Kilis",
+    "slug": "kilis",
+    "districtCount": 4,
+    "neighborhoodCount": 89,
+    "sourceOrder": 49
+  },
+  {
+    "id": "province:malatya",
+    "reference": "province:malatya",
+    "name": "Malatya",
+    "slug": "malatya",
+    "districtCount": 13,
+    "neighborhoodCount": 719,
+    "sourceOrder": 50
+  },
+  {
+    "id": "province:manisa",
+    "reference": "province:manisa",
+    "name": "Manisa",
+    "slug": "manisa",
+    "districtCount": 17,
+    "neighborhoodCount": 1089,
+    "sourceOrder": 51
+  },
+  {
+    "id": "province:mardin",
+    "reference": "province:mardin",
+    "name": "Mardin",
+    "slug": "mardin",
+    "districtCount": 10,
+    "neighborhoodCount": 704,
+    "sourceOrder": 52
+  },
+  {
+    "id": "province:mersin",
+    "reference": "province:mersin",
+    "name": "Mersin",
+    "slug": "mersin",
+    "districtCount": 13,
+    "neighborhoodCount": 806,
+    "sourceOrder": 53
+  },
+  {
+    "id": "province:mugla",
+    "reference": "province:mugla",
+    "name": "Muğla",
+    "slug": "mugla",
+    "districtCount": 13,
+    "neighborhoodCount": 574,
+    "sourceOrder": 54
+  },
+  {
+    "id": "province:mus",
+    "reference": "province:mus",
+    "name": "Muş",
+    "slug": "mus",
+    "districtCount": 6,
+    "neighborhoodCount": 124,
+    "sourceOrder": 55
+  },
+  {
+    "id": "province:nevsehir",
+    "reference": "province:nevsehir",
+    "name": "Nevşehir",
+    "slug": "nevsehir",
+    "districtCount": 8,
+    "neighborhoodCount": 127,
+    "sourceOrder": 56
+  },
+  {
+    "id": "province:nigde",
+    "reference": "province:nigde",
+    "name": "Niğde",
+    "slug": "nigde",
+    "districtCount": 6,
+    "neighborhoodCount": 108,
+    "sourceOrder": 57
+  },
+  {
+    "id": "province:ordu",
+    "reference": "province:ordu",
+    "name": "Ordu",
+    "slug": "ordu",
+    "districtCount": 19,
+    "neighborhoodCount": 773,
+    "sourceOrder": 58
+  },
+  {
+    "id": "province:osmaniye",
+    "reference": "province:osmaniye",
+    "name": "Osmaniye",
+    "slug": "osmaniye",
+    "districtCount": 7,
+    "neighborhoodCount": 138,
+    "sourceOrder": 59
+  },
+  {
+    "id": "province:rize",
+    "reference": "province:rize",
+    "name": "Rize",
+    "slug": "rize",
+    "districtCount": 12,
+    "neighborhoodCount": 221,
+    "sourceOrder": 60
+  },
+  {
+    "id": "province:sakarya",
+    "reference": "province:sakarya",
+    "name": "Sakarya",
+    "slug": "sakarya",
+    "districtCount": 16,
+    "neighborhoodCount": 672,
+    "sourceOrder": 61
+  },
+  {
+    "id": "province:samsun",
+    "reference": "province:samsun",
+    "name": "Samsun",
+    "slug": "samsun",
+    "districtCount": 17,
+    "neighborhoodCount": 1253,
+    "sourceOrder": 62
+  },
+  {
+    "id": "province:sinop",
+    "reference": "province:sinop",
+    "name": "Sinop",
+    "slug": "sinop",
+    "districtCount": 9,
+    "neighborhoodCount": 53,
+    "sourceOrder": 63
+  },
+  {
+    "id": "province:sivas",
+    "reference": "province:sivas",
+    "name": "Sivas",
+    "slug": "sivas",
+    "districtCount": 17,
+    "neighborhoodCount": 252,
+    "sourceOrder": 64
+  },
+  {
+    "id": "province:siirt",
+    "reference": "province:siirt",
+    "name": "Siirt",
+    "slug": "siirt",
+    "districtCount": 7,
+    "neighborhoodCount": 63,
+    "sourceOrder": 65
+  },
+  {
+    "id": "province:tekirdag",
+    "reference": "province:tekirdag",
+    "name": "Tekirdağ",
+    "slug": "tekirdag",
+    "districtCount": 11,
+    "neighborhoodCount": 373,
+    "sourceOrder": 66
+  },
+  {
+    "id": "province:tokat",
+    "reference": "province:tokat",
+    "name": "Tokat",
+    "slug": "tokat",
+    "districtCount": 12,
+    "neighborhoodCount": 325,
+    "sourceOrder": 67
+  },
+  {
+    "id": "province:trabzon",
+    "reference": "province:trabzon",
+    "name": "Trabzon",
+    "slug": "trabzon",
+    "districtCount": 18,
+    "neighborhoodCount": 716,
+    "sourceOrder": 68
+  },
+  {
+    "id": "province:tunceli",
+    "reference": "province:tunceli",
+    "name": "Tunceli",
+    "slug": "tunceli",
+    "districtCount": 8,
+    "neighborhoodCount": 47,
+    "sourceOrder": 69
+  },
+  {
+    "id": "province:usak",
+    "reference": "province:usak",
+    "name": "Uşak",
+    "slug": "usak",
+    "districtCount": 6,
+    "neighborhoodCount": 73,
+    "sourceOrder": 70
+  },
+  {
+    "id": "province:van",
+    "reference": "province:van",
+    "name": "Van",
+    "slug": "van",
+    "districtCount": 13,
+    "neighborhoodCount": 696,
+    "sourceOrder": 71
+  },
+  {
+    "id": "province:yalova",
+    "reference": "province:yalova",
+    "name": "Yalova",
+    "slug": "yalova",
+    "districtCount": 6,
+    "neighborhoodCount": 51,
+    "sourceOrder": 72
+  },
+  {
+    "id": "province:yozgat",
+    "reference": "province:yozgat",
+    "name": "Yozgat",
+    "slug": "yozgat",
+    "districtCount": 14,
+    "neighborhoodCount": 241,
+    "sourceOrder": 73
+  },
+  {
+    "id": "province:zonguldak",
+    "reference": "province:zonguldak",
+    "name": "Zonguldak",
+    "slug": "zonguldak",
+    "districtCount": 8,
+    "neighborhoodCount": 190,
+    "sourceOrder": 74
+  },
+  {
+    "id": "province:canakkale",
+    "reference": "province:canakkale",
+    "name": "Çanakkale",
+    "slug": "canakkale",
+    "districtCount": 12,
+    "neighborhoodCount": 84,
+    "sourceOrder": 75
+  },
+  {
+    "id": "province:cankiri",
+    "reference": "province:cankiri",
+    "name": "Çankırı",
+    "slug": "cankiri",
+    "districtCount": 12,
+    "neighborhoodCount": 99,
+    "sourceOrder": 76
+  },
+  {
+    "id": "province:corum",
+    "reference": "province:corum",
+    "name": "Çorum",
+    "slug": "corum",
+    "districtCount": 14,
+    "neighborhoodCount": 130,
+    "sourceOrder": 77
+  },
+  {
+    "id": "province:istanbul",
+    "reference": "province:istanbul",
+    "name": "İstanbul",
+    "slug": "istanbul",
+    "districtCount": 39,
+    "neighborhoodCount": 963,
+    "sourceOrder": 78
+  },
+  {
+    "id": "province:izmir",
+    "reference": "province:izmir",
+    "name": "İzmir",
+    "slug": "izmir",
+    "districtCount": 30,
+    "neighborhoodCount": 1301,
+    "sourceOrder": 79
+  },
+  {
+    "id": "province:sanliurfa",
+    "reference": "province:sanliurfa",
+    "name": "Şanlıurfa",
+    "slug": "sanliurfa",
+    "districtCount": 13,
+    "neighborhoodCount": 1472,
+    "sourceOrder": 80
+  },
+  {
+    "id": "province:sirnak",
+    "reference": "province:sirnak",
+    "name": "Şırnak",
+    "slug": "sirnak",
+    "districtCount": 7,
+    "neighborhoodCount": 101,
+    "sourceOrder": 81
+  }
+]

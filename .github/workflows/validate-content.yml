@@ -1,0 +1,70 @@
+name: Siteyi Kontrol Et
+
+# İçerik editörünün (veya proje sorumlusunun) GitHub'daki "Actions" sekmesinden
+# elle tetikleyebileceği hafif, hızlı bir kontrol. Tam CI (ci.yml) derleme,
+# Playwright ve erişilebilirlik testlerini de içerdiğinden birkaç dakika
+# sürebilir; bu iş akışı yalnızca içerik/şema doğruluğuna odaklanır ve çok
+# daha hızlı sonuç verir.
+#
+# Not: Pages CMS (pagescms.org), .pages.yml üzerinden panel içine özel bir
+# "workflow tetikleme" düğmesi eklemeyi destekleyebilir; bu iş akışı o düğmeye
+# bağlanacak şekilde tasarlanmıştır (workflow_dispatch). Böyle bir düğmenin
+# .pages.yml içindeki tam alan adları/sözdizimi, bu doküman yazıldığı sırada
+# Pages CMS'in güncel resmî dokümantasyonundan doğrulanamadığından bilinçli
+# olarak EKLENMEMİŞTİR (bkz. nihai rapordaki "açık kalan noktalar"). Bu
+# iş akışı, o düğme olmadan da doğrudan GitHub → Actions → "Siteyi Kontrol
+# Et" → "Run workflow" ile elle çalıştırılabilir.
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/content/**'
+      - 'src/content.config.ts'
+      - 'src/data/site-content.json'
+      - 'src/data/ads.json'
+      - 'src/data/social.json'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-content:
+    name: İçerik şeması, kaynak atıfları ve güncellik kontrolü
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu çek
+        uses: actions/checkout@v4
+
+      - name: pnpm kurulumu
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Node.js kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: 'pnpm'
+
+      - name: Bağımlılıkları kur
+        run: pnpm install --frozen-lockfile
+
+      - name: Konum verisini doğrula
+        run: pnpm locations:import
+
+      - name: İçerik şeması (Zod) ve TypeScript tip kontrolü
+        run: pnpm exec astro check
+
+      - name: İçerik doğrulama (front-matter, [[source:key]] atıfları, görsel/kelime kontrolleri)
+        run: pnpm content:validate
+
+      - name: Güncellik raporu (bilgilendirme amaçlı, build'i başarısız yapmaz)
+        run: pnpm content:stale
+
+      - name: Güncellik raporunu artefakt olarak yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: stale-content-report
+          path: reports/stale-content.md
+          retention-days: 30

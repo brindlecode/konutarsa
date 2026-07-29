@@ -1,0 +1,15 @@
+---
+const {
+  as: Tag = 'div',
+  narrow = false,
+  class: className,
+} = Astro.props as {
+  as?: keyof HTMLElementTagNameMap;
+  narrow?: boolean;
+  class?: string;
+};
+---
+
+<Tag class:list={[narrow ? 'prose-container' : 'container', className]}>
+  <slot />
+</Tag>

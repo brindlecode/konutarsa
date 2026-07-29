@@ -1,0 +1,196 @@
+---
+interface Props {
+  url: string;
+  title: string;
+}
+const { url, title } = Astro.props;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+---
+
+<div class="share-buttons" data-share-buttons data-share-url={url} data-share-title={title}>
+  <p class="share-label">Paylaş</p>
+  <div class="share-actions">
+    <button type="button" data-share-native class="share-icon-button" aria-label="Paylaş" hidden>
+      <svg
+        aria-hidden="true"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle
+          cx="18"
+          cy="19"
+          r="3"></circle>
+        <line x1="8.6" y1="10.6" x2="15.4" y2="6.4"></line><line
+          x1="8.6"
+          y1="13.4"
+          x2="15.4"
+          y2="17.6"></line>
+      </svg>
+    </button>
+    <button type="button" data-share-copy class="share-icon-button" aria-label="Bağlantıyı kopyala">
+      <svg
+        aria-hidden="true"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.5"></path>
+        <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.36-1.36"></path>
+      </svg>
+    </button>
+    <a
+      class="share-icon-button"
+      aria-label="X'te paylaş"
+      href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-share-network="x"
+    >
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M18.9 3H21l-6.4 7.3L22 21h-6.6l-4.6-6.1L5.6 21H3.4l6.8-7.8L2.5 3h6.7l4.2 5.6L18.9 3Zm-1.2 16.2h1.2L7.4 4.7H6.1l11.6 14.5Z"
+        ></path>
+      </svg>
+    </a>
+    <a
+      class="share-icon-button"
+      aria-label="Facebook'ta paylaş"
+      href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-share-network="facebook"
+    >
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M14 21v-7h2.4l.4-3H14V9.2c0-.9.3-1.5 1.6-1.5H17V5.1C16.7 5 15.7 5 14.6 5c-2.3 0-3.9 1.4-3.9 4v2H8.3v3H10.7v7h3.3Z"
+        ></path>
+      </svg>
+    </a>
+    <a
+      class="share-icon-button"
+      aria-label="LinkedIn'de paylaş"
+      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-share-network="linkedin"
+    >
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M6.94 8.5H4V19h2.94V8.5ZM5.47 7.2a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4ZM20 19v-5.9c0-3.1-1.65-4.6-3.86-4.6-1.78 0-2.57 1-3.02 1.68V8.5H10.1c.04.85 0 10.5 0 10.5h2.98v-5.86c0-.31.02-.62.11-.85.25-.62.81-1.26 1.75-1.26 1.24 0 1.74.94 1.74 2.32V19H20Z"
+        ></path>
+      </svg>
+    </a>
+    <a
+      class="share-icon-button"
+      aria-label="WhatsApp'ta paylaş"
+      href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-share-network="whatsapp"
+    >
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Zm0 1.8a7.2 7.2 0 0 1 6.1 11c-2 3.2-6.1 4.3-9.3 2.4l-.3-.2-2.6.7.7-2.5-.2-.3A7.2 7.2 0 0 1 12 4.8Zm-2.2 3.1c-.2 0-.5.1-.6.3-.2.2-.7.7-.7 1.7s.7 2 .8 2.1c.1.2 1.4 2.2 3.5 3 .5.2.9.3 1.2.4.5.2 1 .1 1.3 0 .4-.1 1.2-.5 1.4-1 .2-.4.2-.8.1-1-.1-.1-.2-.2-.5-.3l-1.4-.7c-.2-.1-.4-.1-.5.1l-.5.7c-.1.2-.3.2-.5.1-.2-.1-1-.4-1.8-1.2-.7-.6-1.1-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.5c.1-.1.1-.3.1-.4l-.6-1.5c-.1-.4-.3-.4-.5-.4h-.4Z"
+        ></path>
+      </svg>
+    </a>
+  </div>
+  <span class="copy-feedback" role="status" aria-live="polite" hidden>Bağlantı kopyalandı</span>
+</div>
+
+<style>
+  .share-buttons {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .share-label {
+    font-weight: 700;
+    font-size: var(--text-sm);
+  }
+  .share-actions {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .share-icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background-color: var(--color-surface-muted);
+    color: var(--color-text);
+  }
+  .share-icon-button:hover {
+    background-color: var(--color-brand-100);
+    color: var(--color-brand-700);
+  }
+  .copy-feedback {
+    font-size: var(--text-sm);
+    color: var(--color-success);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-share-buttons]').forEach((container) => {
+    const url = container.dataset.shareUrl ?? '';
+    const title = container.dataset.shareTitle ?? '';
+    const nativeButton = container.querySelector<HTMLButtonElement>('[data-share-native]');
+    const copyButton = container.querySelector<HTMLButtonElement>('[data-share-copy]');
+    const feedback = container.querySelector<HTMLElement>('.copy-feedback');
+
+    if (nativeButton && typeof navigator.share === 'function') {
+      nativeButton.hidden = false;
+      nativeButton.addEventListener('click', async () => {
+        try {
+          await navigator.share({ url, title });
+          window.trackEvent?.('share_click', { method: 'native' });
+        } catch {
+          /* kullanıcı paylaşımı iptal etmiş olabilir; sessizce yoksay */
+        }
+      });
+    }
+
+    copyButton?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      if (feedback) {
+        feedback.hidden = false;
+        window.setTimeout(() => {
+          feedback.hidden = true;
+        }, 2500);
+      }
+      window.trackEvent?.('share_click', { method: 'copy' });
+    });
+
+    container.querySelectorAll<HTMLAnchorElement>('[data-share-network]').forEach((link) => {
+      link.addEventListener('click', () => {
+        window.trackEvent?.('share_click', { method: link.dataset.shareNetwork ?? 'unknown' });
+      });
+    });
+  });
+</script>

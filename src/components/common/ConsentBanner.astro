@@ -1,0 +1,111 @@
+---
+/**
+ * Basit çerez onay katmanı. Yalnızca AdSense veya GA4 etkinleştirildiğinde
+ * BaseLayout tarafından render edilir (bkz. madde 23). NOT: Bu, sertifikalı
+ * bir CMP değildir — gerçek AdSense/EEA kullanımı öncesinde Google'ın güncel
+ * Consent Mode ve CMP gereksinimleri resmî dokümantasyondan doğrulanmalı ve
+ * gerekirse kayıtlı bir CMP entegre edilmelidir (bkz. ADSENSE_SETUP_TR.md).
+ */
+---
+
+<div class="consent-banner" data-consent-banner hidden role="region" aria-label="Çerez tercihleri">
+  <div class="consent-banner-inner">
+    <p>
+      KonutArsa; analiz ve reklam özellikleri etkinleştirildiğinde, tercihinize bağlı olarak çerez
+      kullanabilir. Tercihinizi dilediğiniz zaman değiştirebilirsiniz.
+      <a href="/cerez-politikasi/">Çerez politikası</a>
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="button button-secondary" data-consent-reject
+        >Yalnızca zorunlu</button
+      >
+      <button type="button" class="button button-primary" data-consent-accept>Kabul et</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .consent-banner {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: var(--color-surface-alt);
+    border-top: 1px solid var(--color-border);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-4);
+  }
+
+  .consent-banner-inner {
+    max-width: var(--page-max-width);
+    margin-inline: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .consent-banner p {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    max-width: 48rem;
+  }
+
+  .consent-actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'konutarsa-consent';
+
+  interface ConsentValue {
+    necessary: true;
+    analytics: boolean;
+    ads: boolean;
+    timestamp: number;
+  }
+
+  function getConsent(): ConsentValue | null {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? (JSON.parse(raw) as ConsentValue) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function setConsent(value: ConsentValue) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
+    } catch {
+      /* localStorage kullanılamıyor olabilir (gizli sekme vb.); sessizce yoksay */
+    }
+    window.dispatchEvent(new CustomEvent('konutarsa:consent-updated', { detail: value }));
+  }
+
+  (
+    window as unknown as { konutarsaConsent: { get: typeof getConsent; set: typeof setConsent } }
+  ).konutarsaConsent = {
+    get: getConsent,
+    set: setConsent,
+  };
+
+  const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
+  if (banner) {
+    banner.hidden = getConsent() !== null;
+
+    banner.querySelector('[data-consent-accept]')?.addEventListener('click', () => {
+      setConsent({ necessary: true, analytics: true, ads: true, timestamp: Date.now() });
+      banner.hidden = true;
+    });
+
+    banner.querySelector('[data-consent-reject]')?.addEventListener('click', () => {
+      setConsent({ necessary: true, analytics: false, ads: false, timestamp: Date.now() });
+      banner.hidden = true;
+    });
+  }
+</script>

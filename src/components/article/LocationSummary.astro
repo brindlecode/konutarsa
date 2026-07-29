@@ -1,0 +1,109 @@
+---
+import { formatDateLong } from '../../lib/dates';
+import type { ResolvedLocation } from '../../lib/locations';
+
+interface Props {
+  location: ResolvedLocation;
+  propertyFocus: 'housing' | 'land' | 'mixed';
+  riskLevel?: string;
+  investmentHorizon?: string;
+  updatedAt?: Date;
+  publishedAt: Date;
+}
+
+const { location, propertyFocus, riskLevel, investmentHorizon, updatedAt, publishedAt } =
+  Astro.props;
+
+const PROPERTY_FOCUS_LABELS_TR: Record<string, string> = {
+  housing: 'Konut',
+  land: 'Arsa',
+  mixed: 'Konut ve arsa',
+};
+---
+
+<section class="location-summary card" aria-labelledby="location-summary-heading">
+  <h2 id="location-summary-heading" class="visually-hidden">Bölge bilgi özeti</h2>
+  <dl>
+    <div>
+      <dt>İl</dt>
+      <dd>{location.province}</dd>
+    </div>
+    {
+      location.district && (
+        <div>
+          <dt>İlçe</dt>
+          <dd>{location.district}</dd>
+        </div>
+      )
+    }
+    {
+      location.neighborhood && (
+        <div>
+          <dt>Mahalle / bölge</dt>
+          <dd>{location.neighborhood}</dd>
+        </div>
+      )
+    }
+    <div>
+      <dt>Gayrimenkul odağı</dt>
+      <dd>{PROPERTY_FOCUS_LABELS_TR[propertyFocus]}</dd>
+    </div>
+    {
+      riskLevel && (
+        <div>
+          <dt>Risk değerlendirmesi</dt>
+          <dd>{riskLevel}</dd>
+        </div>
+      )
+    }
+    {
+      investmentHorizon && (
+        <div>
+          <dt>Yatırım vadesi</dt>
+          <dd>{investmentHorizon}</dd>
+        </div>
+      )
+    }
+    <div>
+      <dt>Son güncelleme</dt>
+      <dd>
+        <time datetime={(updatedAt ?? publishedAt).toISOString()}
+          >{formatDateLong(updatedAt ?? publishedAt)}</time
+        >
+      </dd>
+    </div>
+  </dl>
+  <p class="location-summary-note">
+    Risk ve yatırım değerlendirmeleri kesin sonuç garantisi vermez; genel gözlemlere dayanan
+    editoryal değerlendirmelerdir.
+  </p>
+</section>
+
+<style>
+  .location-summary {
+    padding: var(--space-5);
+  }
+  .location-summary dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: var(--space-4);
+  }
+  .location-summary dt {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+  }
+  .location-summary dd {
+    margin-top: var(--space-1);
+    font-weight: 700;
+  }
+  .location-summary-note {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    max-width: none;
+  }
+</style>

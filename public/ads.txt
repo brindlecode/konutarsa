@@ -1,0 +1,11 @@
+# KonutArsa ads.txt
+#
+# Henüz gerçek bir AdSense publisher ID tanımlanmadı, bu yüzden geçerli
+# bir satır üretilmedi (sahte/placeholder ID yayımlamak yasaktır).
+#
+# AdSense onayı alındıktan sonra:
+#   1. PUBLIC_ADSENSE_CLIENT ortam değişkenini "ca-pub-XXXXXXXXXXXXXXXX"
+#      biçiminde ayarlayın (bkz. ADSENSE_SETUP_TR.md).
+#   2. pnpm ads:generate komutunu (veya normal build sürecini) tekrar
+#      çalıştırın; bu dosya geçerli bir "google.com, pub-..., DIRECT, ..."
+#      satırıyla otomatik olarak yeniden üretilecektir.

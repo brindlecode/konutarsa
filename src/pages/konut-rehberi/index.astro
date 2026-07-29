@@ -1,0 +1,15 @@
+---
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.collection === 'konut-rehberi');
+---
+
+<CategoryLayout
+  title="Konut Rehberi"
+  description="Ev alırken dikkat edilmesi gereken kat mülkiyeti, iskân, kredi, aidat ve daha fazlası hakkında kaynaklı rehberler."
+  path="/konut-rehberi/"
+  items={items}
+  breadcrumbItems={[{ label: 'Konut Rehberi', path: '/konut-rehberi/' }]}
+/>

@@ -1,0 +1,130 @@
+---
+import { getEntry, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import {
+  getPublishedEntries,
+  getEntrySlug,
+  getAllPublishedSummaries,
+  getRelatedContent,
+  toAuthorSummary,
+  assertPublished,
+  COLLECTION_LABELS_TR,
+} from '../../lib/content';
+import { resolveLocationRef } from '../../lib/locations';
+import { getBolgeAnaliziPath } from '../../lib/urls';
+import { buildArticleSchema, buildFaqSchema, buildPlaceSchema } from '../../lib/schema';
+
+const COLLECTION = 'bolge-analizleri';
+
+export async function getStaticPaths() {
+  const entries = await getPublishedEntries('bolge-analizleri');
+  return entries.map((entry) => {
+    const slug = getEntrySlug(entry);
+    const resolved = resolveLocationRef(entry.data.locationRef);
+    if (!resolved) {
+      throw new Error(
+        `[konutarsa] "${entry.id}" için locationRef çözülemedi: "${entry.data.locationRef}". ` +
+          'Bu, şema doğrulamasını atlatan bir veri tutarsızlığına işaret eder.'
+      );
+    }
+    return {
+      params: { path: `${resolved.urlPath}/${slug}` },
+      props: { entry, resolved },
+    };
+  });
+}
+
+const { entry, resolved } = Astro.props;
+assertPublished(entry.data);
+
+const slug = getEntrySlug(entry);
+const path = getBolgeAnaliziPath(resolved.urlPath, slug);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+
+const author = await getEntry(entry.data.author);
+const reviewer = entry.data.reviewedBy ? await getEntry(entry.data.reviewedBy) : undefined;
+
+const allSummaries = await getAllPublishedSummaries();
+const currentSummary = allSummaries.find((s) => s.collection === COLLECTION && s.slug === slug);
+const relatedContent = currentSummary ? getRelatedContent(currentSummary, allSummaries) : [];
+
+const articleSchema = buildArticleSchema({
+  headline: entry.data.title,
+  description: entry.data.excerpt,
+  path,
+  image: entry.data.coverImage,
+  datePublished: entry.data.publishedAt,
+  dateModified: entry.data.updatedAt,
+  author: {
+    name: author.data.name,
+    slug: author.id,
+    role: author.data.role,
+    avatar: author.data.avatar,
+  },
+  reviewer: reviewer
+    ? { name: reviewer.data.name, slug: reviewer.id, role: reviewer.data.role }
+    : undefined,
+  section: COLLECTION_LABELS_TR[COLLECTION],
+  keywords: entry.data.tags,
+});
+const faqSchema = buildFaqSchema(entry.data.faq);
+const placeSchema = { '@context': 'https://schema.org', about: buildPlaceSchema(resolved) };
+const jsonLd = [articleSchema, placeSchema, ...(faqSchema ? [faqSchema] : [])];
+
+const breadcrumbItems = [
+  { label: COLLECTION_LABELS_TR[COLLECTION], path: '/bolge-analizleri/' },
+  ...resolved.breadcrumb.map((item, index) => ({
+    label: item.label,
+    path: `/bolge-analizleri/${resolved.breadcrumb
+      .slice(0, index + 1)
+      .map((b) => b.slug)
+      .join('/')}/`,
+  })),
+  { label: entry.data.title, path },
+];
+---
+
+<ArticleLayout
+  collectionLabel={COLLECTION_LABELS_TR[COLLECTION]}
+  collectionHref="/bolge-analizleri/"
+  title={entry.data.title}
+  excerpt={entry.data.excerpt}
+  quickAnswer={entry.data.quickAnswer}
+  keyTakeaways={entry.data.keyTakeaways}
+  coverImage={entry.data.coverImage}
+  coverAlt={entry.data.coverAlt}
+  coverCaption={entry.data.coverCaption}
+  author={toAuthorSummary(author)}
+  reviewer={reviewer ? toAuthorSummary(reviewer) : undefined}
+  publishedAt={entry.data.publishedAt}
+  updatedAt={entry.data.updatedAt}
+  sources={entry.data.sources}
+  sourceUsageOrder={remarkPluginFrontmatter.sourceUsageOrder ?? []}
+  faq={entry.data.faq}
+  methodology={entry.data.methodology}
+  corrections={entry.data.corrections}
+  sponsorship={entry.data.sponsorship}
+  breadcrumbItems={breadcrumbItems}
+  path={path}
+  canonicalOverride={entry.data.seo?.canonicalOverride}
+  noindex={entry.data.seo?.noindex}
+  nofollow={entry.data.seo?.nofollow}
+  titleOverride={entry.data.seo?.titleOverride}
+  descriptionOverride={entry.data.seo?.descriptionOverride}
+  ogImageOverride={entry.data.seo?.ogImageOverride}
+  bodyRawText={entry.body ?? ''}
+  headings={headings}
+  relatedContent={relatedContent}
+  locationBlock={{
+    location: resolved,
+    propertyFocus: entry.data.propertyFocus,
+    riskLevel: entry.data.riskLevel,
+    investmentHorizon: entry.data.investmentHorizon,
+  }}
+  jsonLd={jsonLd}
+  adsCategory={COLLECTION}
+  adsProvinceSlug={resolved.provinceSlug}
+  adsDistrictSlug={resolved.districtSlug}
+>
+  <Content />
+</ArticleLayout>

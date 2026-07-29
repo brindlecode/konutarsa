@@ -1,0 +1,58 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Editörlük Politikası"
+  description="KonutArsa içeriklerinin nasıl hazırlandığı, gözden geçirildiği ve yayımlandığına dair editoryal ilkelerimiz."
+  path="/editorluk-politikasi/"
+  breadcrumbItems={[{ label: 'Editörlük Politikası', path: '/editorluk-politikasi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    Bu sayfa, KonutArsa içeriklerinin nasıl hazırlandığını, gözden geçirildiğini ve yayımlandığını
+    açıklar. Amacımız, okuyucularımızın her içeriğin arkasındaki süreci anlamasını sağlamaktır.
+  </p>
+
+  <h2>İçerik hazırlama süreci</h2>
+  <ol>
+    <li>
+      Konu ve kapsam belirlenir; ilgili resmî kaynaklar (mevzuat, TCMB/TÜİK verileri, ilgili
+      kurumların yayınları) araştırılır.
+    </li>
+    <li>
+      İçerik, bu kaynaklara dayanarak yazılır. Hazırlıkta yapay zekâ desteğinden faydalanılabilir
+      (bkz. <a href="/yapay-zeka-politikasi/">Yapay Zekâ Kullanım Politikası</a>).
+    </li>
+    <li>İçerik, yayımlanmadan önce bir editör tarafından gözden geçirilir.</li>
+    <li>Kaynaklar doğrulanır ve içerik sayfasının sonunda numaralı olarak listelenir.</li>
+    <li>İçerik yayımlanır ve gerektiğinde güncellenir.</li>
+  </ol>
+
+  <h2>Bağımsızlık ilkesi</h2>
+  <p>
+    KonutArsa emlak ilanı yayınlamaz ve belirli bir emlak ofisi, danışman veya projeyi öne çıkarmaz.
+    Sponsorlu içerikler açıkça "Sponsorlu içerik" etiketiyle işaretlenir ve bağımsız editoryal
+    içerikten görsel olarak ayırt edilir (bkz. <a href="/reklam-politikasi/">Reklam Politikası</a>).
+  </p>
+
+  <h2>Ne yapmayız</h2>
+  <ul>
+    <li>Doğrulanmamış fiyat, kira getirisi veya yatırım getirisi rakamı yayımlamayız.</li>
+    <li>"Kesin kazandırır" veya benzeri garanti içeren ifadeler kullanmayız.</li>
+    <li>Yazarlarımıza sahip olmadıkları unvan veya uzmanlık atfetmeyiz.</li>
+  </ul>
+
+  <h2>Gözden geçirme (reviewedBy)</h2>
+  <p>
+    Hukuki, finansal veya yatırım kararını etkileyebilecek içeriklerde, yazarın yanı sıra bir
+    editörün de içeriği gözden geçirmesi önerilir. Gözden geçiren editör bilgisi, ilgili içeriğin
+    üst kısmında ve "Yazar ve editör kutusu" bölümünde görünür.
+  </p>
+
+  <h2>Sorularınız mı var?</h2>
+  <p>
+    Editoryal sürecimiz hakkında sorularınız için <a href="/iletisim/">İletişim</a> sayfamızı kullanabilirsiniz.
+  </p>
+</StaticPageLayout>

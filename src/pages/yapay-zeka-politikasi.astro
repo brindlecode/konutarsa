@@ -1,0 +1,62 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Yapay Zekâ Kullanım Politikası"
+  description="KonutArsa içeriklerinin hazırlanmasında yapay zekânın nasıl ve hangi sınırlar içinde kullanıldığına dair politikamız."
+  path="/yapay-zeka-politikasi/"
+  breadcrumbItems={[{ label: 'Yapay Zekâ Kullanım Politikası', path: '/yapay-zeka-politikasi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    KonutArsa, içerik hazırlık sürecinde yapay zekâ araçlarından destek alabilir. Bu sayfa, bu
+    desteğin hangi sınırlar içinde kullanıldığını şeffaf şekilde açıklar.
+  </p>
+
+  <h2>Neyi yapay zekâ ile yapıyoruz?</h2>
+  <ul>
+    <li>İçerik taslaklarının hazırlanmasında ve düzenlenmesinde destek alınabilir.</li>
+    <li>
+      Mevcut resmî kaynakların sadeleştirilerek anlaşılır hâle getirilmesinde yardımcı olarak
+      kullanılabilir.
+    </li>
+  </ul>
+
+  <h2>Neyi yapay zekâ ile yapmıyoruz?</h2>
+  <ul>
+    <li>
+      Yapay zekâ tarafından üretilen bilgiyi, insan incelemesi olmadan tek başına resmî kaynak
+      olarak kabul etmeyiz.
+    </li>
+    <li>
+      Sahte istatistik, sahte fiyat, sahte uzmanlık veya sahte kaynak üretmek için kullanmayız.
+    </li>
+    <li>Yazarlarımıza ait olmayan görüş veya deneyimleri yapay zekâ ile "uydurmayız".</li>
+  </ul>
+
+  <h2>İnsan kontrolü şart</h2>
+  <p>
+    Yapay zekâ desteğiyle hazırlanan veya düzenlenen her içerik, yayımlanmadan önce bir insan editör
+    tarafından incelenir; kaynaklar doğrulanır ve içeriğin doğruluğu editoryal sorumlulukla teyit
+    edilir (bkz.
+    <a href="/editorluk-politikasi/">Editörlük Politikası</a>).
+  </p>
+
+  <h2>Yanlışlık bildirimi</h2>
+  <p>
+    Yapay zekâ destekli süreçlere rağmen bir hata oluşabilir. Böyle bir durumu fark ederseniz lütfen
+    <a href="/iletisim/">İletişim</a> sayfamız üzerinden bize bildirin; bildirimler
+    <a href="/duzeltme-politikasi/">Düzeltme Politikamız</a> çerçevesinde değerlendirilip düzeltilir.
+  </p>
+
+  <h2>Arama ve yapay zekâ botlarına erişim</h2>
+  <p>
+    KonutArsa, genel arama motoru botlarının ve yapay zekâ destekli arama botlarının (örneğin
+    OAI-SearchBot) sitemizi taramasına izin verir; ancak içeriklerimizin yapay zekâ modeli
+    eğitiminde kullanılmasına yönelik botlara (örneğin GPTBot) varsayılan olarak izin vermeyiz.
+    Güncel bot erişim ayarlarımızı
+    <code>/robots.txt</code> dosyasından görebilirsiniz.
+  </p>
+</StaticPageLayout>

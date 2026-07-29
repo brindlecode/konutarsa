@@ -1,0 +1,82 @@
+---
+import { formatDateLong } from '../../lib/dates';
+import ReadingTime from './ReadingTime.astro';
+
+interface Props {
+  categoryLabel: string;
+  categoryHref: string;
+  title: string;
+  authorName: string;
+  authorHref: string;
+  reviewerName?: string;
+  reviewerHref?: string;
+  publishedAt: Date;
+  updatedAt?: Date;
+  readingTimeMinutes: number;
+}
+
+const {
+  categoryLabel,
+  categoryHref,
+  title,
+  authorName,
+  authorHref,
+  reviewerName,
+  reviewerHref,
+  publishedAt,
+  updatedAt,
+  readingTimeMinutes,
+} = Astro.props;
+---
+
+<header class="article-header">
+  <a href={categoryHref} class="category-badge badge badge-neutral">{categoryLabel}</a>
+  <h1>{title}</h1>
+  <div class="byline">
+    <span>Yazar: <a href={authorHref}>{authorName}</a></span>
+    {
+      reviewerName && reviewerHref && (
+        <span>
+          Editör: <a href={reviewerHref}>{reviewerName}</a>
+        </span>
+      )
+    }
+    <span>
+      Yayın: <time datetime={publishedAt.toISOString()}>{formatDateLong(publishedAt)}</time>
+    </span>
+    {
+      updatedAt && (
+        <span>
+          Güncelleme: <time datetime={updatedAt.toISOString()}>{formatDateLong(updatedAt)}</time>
+        </span>
+      )
+    }
+    <ReadingTime minutes={readingTimeMinutes} />
+  </div>
+</header>
+
+<style>
+  .article-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .category-badge {
+    width: fit-content;
+  }
+  .article-header h1 {
+    max-width: 24ch;
+  }
+  .byline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .byline a {
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-decoration: underline;
+  }
+</style>

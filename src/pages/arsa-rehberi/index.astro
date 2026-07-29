@@ -1,0 +1,15 @@
+---
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.collection === 'arsa-rehberi');
+---
+
+<CategoryLayout
+  title="Arsa Rehberi"
+  description="Hisseli tapu, imar durumu, TAKS/KAKS, ifraz ve tevhit gibi arsa alım sürecindeki temel konularda kaynaklı rehberler."
+  path="/arsa-rehberi/"
+  items={items}
+  breadcrumbItems={[{ label: 'Arsa Rehberi', path: '/arsa-rehberi/' }]}
+/>

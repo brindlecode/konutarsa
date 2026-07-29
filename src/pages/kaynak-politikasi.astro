@@ -1,0 +1,54 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Kaynak Politikası"
+  description="KonutArsa içeriklerinde kaynakların nasıl seçildiği, atıflandığı ve gösterildiğine dair politikamız."
+  path="/kaynak-politikasi/"
+  breadcrumbItems={[{ label: 'Kaynak Politikası', path: '/kaynak-politikasi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    KonutArsa, içeriklerindeki önemli iddiaları mümkün olduğunca resmî ve güvenilir kaynaklara
+    dayandırmayı ilke edinir.
+  </p>
+
+  <h2>Kaynak seçim ilkelerimiz</h2>
+  <ul>
+    <li>
+      Öncelik, resmî kurum kaynaklarına (bakanlıklar, TCMB, TÜİK, TKGM, mevzuat.gov.tr, resmî gazete
+      vb.) verilir.
+    </li>
+    <li>Resmî kaynaklar, sayfa üzerinde "Resmî kaynak" etiketiyle işaretlenir.</li>
+    <li>
+      Rehber, mevzuat, piyasa raporu ve bölge analizi içeriklerinde en az iki kaynak kullanılması
+      hedeflenir.
+    </li>
+    <li>
+      Kaynak bağlantıları düzenli olarak gözden geçirilir; erişilemeyen veya güncelliğini yitiren
+      kaynaklar güncellenir.
+    </li>
+  </ul>
+
+  <h2>Kaynaklar nasıl gösterilir?</h2>
+  <p>
+    Metin içinde önemli bir iddianın hemen yanında köşeli parantez içinde numaralandırılmış bir
+    kaynak referansı (örneğin <code>[1]</code>) görebilirsiniz. Bu numaralar, sayfanın en altındaki
+    "Kaynaklar" bölümündeki ilgili kaynağa bağlantı verir. Kaynak numaraları, sayfa içindeki ilk
+    kullanım sırasına göre belirlenir.
+  </p>
+
+  <h2>Kaynak bağlantıları hakkında</h2>
+  <p>
+    Kaynak bağlantılarımız normal editoryal bağlantılardır; otomatik olarak "nofollow" işareti
+    eklenmez. Kaynak erişim tarihi, ilgili kaynağın yanında gösterilebilir.
+  </p>
+
+  <h2>Kaynak hatası bildirimi</h2>
+  <p>
+    Bir kaynağın hatalı, erişilemez veya güncelliğini yitirmiş olduğunu fark ederseniz, lütfen
+    <a href="/iletisim/">İletişim</a> sayfamız üzerinden bize bildirin.
+  </p>
+</StaticPageLayout>

@@ -1,0 +1,50 @@
+---
+import type { DirectAd as DirectAdType } from '../../lib/ads';
+
+interface Props {
+  ad: DirectAdType;
+}
+const { ad } = Astro.props;
+---
+
+<a
+  href={ad.destinationUrl}
+  class="direct-ad"
+  rel="sponsored noopener noreferrer"
+  target="_blank"
+  data-direct-ad-id={ad.id}
+  aria-label={`${ad.label}: ${ad.advertiser}`}
+>
+  <img src={ad.image} alt={ad.alt} loading="lazy" width="300" height="250" />
+  <span class="direct-ad-label badge badge-neutral">{ad.label}</span>
+</a>
+
+<style>
+  .direct-ad {
+    position: relative;
+    display: block;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+  }
+  .direct-ad img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 6 / 5;
+    object-fit: cover;
+  }
+  .direct-ad-label {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-direct-ad-id]').forEach((el) => {
+    el.addEventListener('click', () => {
+      window.trackEvent?.('direct_ad_click', { adId: el.dataset.directAdId ?? '' });
+    });
+  });
+</script>

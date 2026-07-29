@@ -1,0 +1,314 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/common/Container.astro';
+import provinces from '../../data/locations/provinces.json';
+import districts from '../../data/locations/districts.json';
+
+const districtsJson = JSON.stringify(districts).replace(/</g, '\\u003c');
+---
+
+<BaseLayout
+  title="Konum Bulucu"
+  descriptionOverride="İl, ilçe ve mahalle hiyerarşisinde arama yapın; ilgili konum referansını (locationRef) bulup kopyalayın."
+  path="/bolgeler/konum-bul/"
+>
+  <Container narrow class="location-finder-page">
+    <h1>Konum bulucu</h1>
+    <p>
+      81 il, 973 ilçe grubu ve binlerce mahalle arasında arama yapın. Bu araç hem ziyaretçiler hem
+      de içerik editörleri için; bir bölge analizi hazırlarken kullanılacak <code>locationRef</code> değerini
+      bulmaya yardımcı olur.
+    </p>
+
+    <form class="location-finder-form" onsubmit="return false">
+      <div class="form-field">
+        <label for="province-select">İl</label>
+        <select id="province-select">
+          <option value="">İl seçin</option>
+          {provinces.map((province) => <option value={province.slug}>{province.name}</option>)}
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="district-select">İlçe</label>
+        <select id="district-select" disabled>
+          <option value="">Önce il seçin</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="neighborhood-search">Mahalle ara</label>
+        <input
+          type="search"
+          id="neighborhood-search"
+          disabled
+          placeholder="Önce il seçin"
+          autocomplete="off"
+        />
+      </div>
+    </form>
+
+    <p id="location-finder-status" role="status" aria-live="polite" class="location-finder-status">
+    </p>
+    <ul id="location-finder-results" class="location-finder-results"></ul>
+
+    <script type="application/json" id="districts-data" set:html={districtsJson} is:inline />
+  </Container>
+</BaseLayout>
+
+<style>
+  .location-finder-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .location-finder-form {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  }
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .form-field label {
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+  .form-field select,
+  .form-field input {
+    padding: var(--space-3);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    min-height: 44px;
+    font-size: var(--text-base);
+  }
+  .form-field select:disabled,
+  .form-field input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .location-finder-status {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    min-height: 1.5em;
+  }
+  .location-finder-results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .location-result {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-surface-muted);
+    border-radius: var(--radius-md);
+  }
+  .location-result-hierarchy {
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .location-result-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .location-result-actions code {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    background-color: var(--color-surface-alt);
+    padding: 0.2em 0.5em;
+    border-radius: var(--radius-sm);
+  }
+</style>
+
+<script>
+  interface NeighborhoodRecord {
+    id: string;
+    province: string;
+    provinceSlug: string;
+    district: string;
+    districtSlug: string;
+    subUnit: string;
+    neighborhood: string;
+    reference: string;
+  }
+
+  interface DistrictSummary {
+    slug: string;
+    name: string;
+    provinceSlug: string;
+  }
+
+  const provinceSelect = document.getElementById('province-select') as HTMLSelectElement;
+  const districtSelect = document.getElementById('district-select') as HTMLSelectElement;
+  const neighborhoodInput = document.getElementById('neighborhood-search') as HTMLInputElement;
+  const statusEl = document.getElementById('location-finder-status');
+  const resultsEl = document.getElementById('location-finder-results');
+  const districtsDataEl = document.getElementById('districts-data');
+
+  const allDistricts: DistrictSummary[] = districtsDataEl
+    ? JSON.parse(districtsDataEl.textContent ?? '[]')
+    : [];
+
+  // Vite'in statik glob'u: her il dosyası ayrı bir chunk olarak yalnızca
+  // seçildiğinde indirilir (bkz. madde 6.4 — yalnızca ilgili ilin JSON'unu yükle).
+  const neighborhoodModules = import.meta.glob<{ default: NeighborhoodRecord[] }>(
+    '/src/data/locations/neighborhoods/*.json'
+  );
+
+  let currentNeighborhoods: NeighborhoodRecord[] = [];
+  let debounceTimer: number | undefined;
+
+  function turkishFold(value: string): string {
+    return value
+      .toLocaleLowerCase('tr-TR')
+      .replaceAll('ı', 'i')
+      .replaceAll('ğ', 'g')
+      .replaceAll('ü', 'u')
+      .replaceAll('ş', 's')
+      .replaceAll('ö', 'o')
+      .replaceAll('ç', 'c');
+  }
+
+  function levenshtein(a: string, b: string): number {
+    const dp: number[][] = Array.from({ length: a.length + 1 }, () =>
+      new Array(b.length + 1).fill(0)
+    );
+    for (let i = 0; i <= a.length; i++) dp[i]![0] = i;
+    for (let j = 0; j <= b.length; j++) dp[0]![j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+        const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+        dp[i]![j] = Math.min(dp[i - 1]![j]! + 1, dp[i]![j - 1]! + 1, dp[i - 1]![j - 1]! + cost);
+      }
+    }
+    return dp[a.length]![b.length]!;
+  }
+
+  function fuzzyMatches(query: string, name: string): boolean {
+    const words = name.split(' ');
+    const tolerance = query.length <= 6 ? 1 : 2;
+    return words.some(
+      (word) => levenshtein(query, word.slice(0, query.length + tolerance)) <= tolerance
+    );
+  }
+
+  async function handleProvinceChange() {
+    const provinceSlug = provinceSelect.value;
+    districtSelect.innerHTML = '<option value="">Tüm ilçeler</option>';
+    currentNeighborhoods = [];
+    if (resultsEl) resultsEl.innerHTML = '';
+    if (statusEl) statusEl.textContent = '';
+
+    if (!provinceSlug) {
+      districtSelect.disabled = true;
+      neighborhoodInput.disabled = true;
+      neighborhoodInput.placeholder = 'Önce il seçin';
+      return;
+    }
+
+    for (const district of allDistricts.filter((d) => d.provinceSlug === provinceSlug)) {
+      const option = document.createElement('option');
+      option.value = district.slug;
+      option.textContent = district.name;
+      districtSelect.appendChild(option);
+    }
+    districtSelect.disabled = false;
+    neighborhoodInput.disabled = false;
+    neighborhoodInput.placeholder = 'Mahalle adı yazın...';
+    neighborhoodInput.value = '';
+
+    if (statusEl) statusEl.textContent = 'Mahalle verisi yükleniyor…';
+    const modulePath = `/src/data/locations/neighborhoods/${provinceSlug}.json`;
+    const loader = neighborhoodModules[modulePath];
+    if (loader) {
+      const mod = await loader();
+      currentNeighborhoods = mod.default;
+      if (statusEl) {
+        statusEl.textContent = `${currentNeighborhoods.length} mahalle yüklendi. Aramak için yazmaya başlayın.`;
+      }
+    } else if (statusEl) {
+      statusEl.textContent = 'Bu il için mahalle verisi bulunamadı.';
+    }
+  }
+
+  function renderResults(matches: NeighborhoodRecord[], query: string) {
+    if (!resultsEl) return;
+    resultsEl.innerHTML = '';
+    for (const record of matches) {
+      const li = document.createElement('li');
+      li.className = 'location-result';
+      const hierarchy =
+        record.subUnit && record.subUnit !== record.district
+          ? `${record.province} › ${record.district} › ${record.subUnit} › ${record.neighborhood}`
+          : `${record.province} › ${record.district} › ${record.neighborhood}`;
+      const hierarchyEl = document.createElement('div');
+      hierarchyEl.className = 'location-result-hierarchy';
+      hierarchyEl.textContent = hierarchy;
+
+      const actionsEl = document.createElement('div');
+      actionsEl.className = 'location-result-actions';
+      const codeEl = document.createElement('code');
+      codeEl.textContent = record.reference;
+      const copyButton = document.createElement('button');
+      copyButton.type = 'button';
+      copyButton.className = 'button button-secondary';
+      copyButton.textContent = 'Kopyala';
+      copyButton.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(record.reference);
+        copyButton.textContent = 'Kopyalandı!';
+        window.setTimeout(() => {
+          copyButton.textContent = 'Kopyala';
+        }, 1500);
+      });
+      actionsEl.append(codeEl, copyButton);
+      li.append(hierarchyEl, actionsEl);
+      resultsEl.appendChild(li);
+    }
+    if (statusEl) {
+      statusEl.textContent =
+        query.length > 0
+          ? `${matches.length} sonuç gösteriliyor (en fazla 50).`
+          : `${currentNeighborhoods.length} mahalle listelendi. Aramak için yazmaya başlayın.`;
+    }
+  }
+
+  function runNeighborhoodSearch() {
+    const rawQuery = neighborhoodInput.value.trim();
+    const query = turkishFold(rawQuery);
+    const districtFilter = districtSelect.value;
+
+    let pool = currentNeighborhoods;
+    if (districtFilter) pool = pool.filter((n) => n.districtSlug === districtFilter);
+
+    if (query.length === 0) {
+      if (resultsEl) resultsEl.innerHTML = '';
+      if (statusEl) {
+        statusEl.textContent = `${pool.length} mahalle bulundu. Aramak için yazmaya başlayın.`;
+      }
+      return;
+    }
+
+    let matches = pool.filter((n) => turkishFold(n.neighborhood).includes(query));
+    if (matches.length === 0 && query.length >= 3) {
+      matches = pool.filter((n) => fuzzyMatches(query, turkishFold(n.neighborhood)));
+    }
+    renderResults(matches.slice(0, 50), rawQuery);
+  }
+
+  provinceSelect.addEventListener('change', () => void handleProvinceChange());
+  districtSelect.addEventListener('change', runNeighborhoodSearch);
+  neighborhoodInput.addEventListener('input', () => {
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(runNeighborhoodSearch, 150);
+  });
+</script>

@@ -1,0 +1,48 @@
+name: IndexNow Bildirimi
+
+# Yalnızca INDEXNOW_ENABLED=true VE geçerli bir INDEXNOW_KEY secret'ı
+# tanımlıysa gerçekten bir şey yapar; aksi hâlde scripts/submit-indexnow.mjs
+# güvenli biçimde hiçbir işlem yapmadan çıkar (bkz. SEO_OPERATIONS_TR.md §7).
+# Bu iş akışı isteğe bağlıdır ve devre dışı bırakılabilir.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  submit-indexnow:
+    name: Değişen içerik URL'lerini IndexNow'a bildir
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodu çek (önceki commit ile karşılaştırma için 2 commit geçmişi)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: pnpm kurulumu
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Node.js kurulumu
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: 'pnpm'
+
+      - name: Bağımlılıkları kur
+        run: pnpm install --frozen-lockfile
+
+      - name: IndexNow gönderimi (etkin değilse güvenli şekilde atlanır)
+        run: pnpm indexnow:submit
+        continue-on-error: true
+        env:
+          INDEXNOW_ENABLED: ${{ vars.INDEXNOW_ENABLED }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}

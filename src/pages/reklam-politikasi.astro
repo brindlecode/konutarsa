@@ -1,0 +1,59 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+import siteData from '../data/site.json';
+const updatedAt = new Date('2026-07-20');
+const adsActive = siteData.ads.adsenseEnabled || siteData.ads.directAdsEnabled;
+---
+
+<StaticPageLayout
+  title="Reklam Politikası"
+  description="KonutArsa reklam altyapısı, sponsorlu içerik işaretleme ve reklam-editoryal ayrımına dair politikamız."
+  path="/reklam-politikasi/"
+  breadcrumbItems={[{ label: 'Reklam Politikası', path: '/reklam-politikasi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>Bu sayfa, KonutArsa'nın reklam ve sponsorlu içerik yaklaşımını açıklar.</p>
+
+  <h2>Mevcut durum</h2>
+  <p>
+    {
+      adsActive
+        ? 'KonutArsa üzerinde reklam alanları etkin durumdadır.'
+        : 'KonutArsa şu anda reklam göstermemektedir. Reklam altyapısı teknik olarak hazır olsa da, ilk sürümde tüm reklamlar kapalıdır.'
+    }
+  </p>
+
+  <h2>Reklam türlerimiz</h2>
+  <ul>
+    <li>
+      <strong>Google AdSense:</strong> Onay alındığında etkinleştirilebilecek otomatik reklam sistemi.
+    </li>
+    <li>
+      <strong>Doğrudan reklam:</strong> Emlak ofisleri veya danışmanlarla doğrudan anlaşmayla yürütülebilecek
+      banner reklamlar.
+    </li>
+    <li>
+      <strong>Sponsorlu içerik:</strong> Bir kuruluşun desteğiyle hazırlanan, açıkça etiketlenen içerikler.
+    </li>
+  </ul>
+
+  <h2>Reklam - editoryal ayrımı</h2>
+  <ul>
+    <li>Reklam alanları, "Reklam" etiketiyle açıkça işaretlenir.</li>
+    <li>
+      Sponsorlu içerikler, sayfanın üst kısmında görünür bir "Sponsorlu içerik" bildirimiyle
+      işaretlenir ve bağımsız editoryal analiz gibi sunulmaz.
+    </li>
+    <li>Sponsorlu bağlantılara <code>rel="sponsored"</code> işareti eklenir.</li>
+    <li>Reklamlar, içeriğin doğrudan cevabından (AnswerBox) önce gösterilmez.</li>
+    <li>
+      Sponsorlu olması, bir içeriğin arama motorlarından gizlenmesi (noindex) için tek başına bir
+      sebep değildir.
+    </li>
+  </ul>
+
+  <h2>Reklam iş birliği talepleri</h2>
+  <p>
+    Reklam veya sponsorluk iş birliği talepleriniz için <a href="/iletisim/">İletişim</a> sayfamızı kullanabilirsiniz.
+  </p>
+</StaticPageLayout>

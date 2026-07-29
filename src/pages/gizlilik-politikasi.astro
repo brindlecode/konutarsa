@@ -1,0 +1,79 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+import siteData from '../data/site-content.json';
+const updatedAt = new Date('2026-07-20');
+const dataControllerInfo = siteData.organization.dataControllerInfo;
+const contactEmail = siteData.organization.contactEmail;
+---
+
+<StaticPageLayout
+  title="Gizlilik Politikası"
+  description="KonutArsa'nın kişisel veri işleme, çerez kullanımı ve analytics/reklam altyapısına dair gizlilik politikası."
+  path="/gizlilik-politikasi/"
+  breadcrumbItems={[{ label: 'Gizlilik Politikası', path: '/gizlilik-politikasi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    Bu politika, KonutArsa'yı (<code>konutarsa.com</code>) ziyaret ettiğinizde hangi verilerin,
+    hangi amaçla ve nasıl işlendiğini açıklar.
+  </p>
+
+  <h2>Veri sorumlusu</h2>
+  <p>{dataControllerInfo}</p>
+
+  <h2>Şu anda topladığımız veriler</h2>
+  <p>
+    KonutArsa statik bir web sitesidir; kullanıcı hesabı, üyelik veya form tabanlı bir veri toplama
+    sistemi bulunmamaktadır. Varsayılan olarak analytics ve reklam sistemleri kapalıdır.
+  </p>
+
+  <h2>Analytics etkinleştirilirse</h2>
+  <p>
+    Google Analytics 4 veya Cloudflare Web Analytics etkinleştirilirse, ziyaretçi davranışına dair
+    anonimleştirilmiş/toplu istatistikler (sayfa görüntüleme, site içi arama kullanımı, paylaşım
+    tıklamaları gibi) toplanabilir. Bu veriler kişisel kimlik bilgisi, e-posta adresi veya tam IP
+    adresi içermez. Analytics yalnızca kullanıcı onayı (bkz. <a href="/cerez-politikasi/"
+      >Çerez Politikası</a
+    >) sonrasında etkinleşir.
+  </p>
+
+  <h2>Reklam etkinleştirilirse</h2>
+  <p>
+    Google AdSense etkinleştirilirse, Google'ın kendi gizlilik politikası ve çerez kullanımı geçerli
+    olur. Güncel bilgi için Google'ın resmî gizlilik politikasına başvurabilirsiniz.
+  </p>
+
+  <h2>Çerezler</h2>
+  <p>
+    Çerez kullanımımız hakkında ayrıntılı bilgi için <a href="/cerez-politikasi/"
+      >Çerez Politikası</a
+    >
+    sayfamızı inceleyebilirsiniz.
+  </p>
+
+  <h2>Üçüncü taraf hizmetler</h2>
+  <p>
+    Sitemiz; hosting için Cloudflare Pages, site içi arama için Pagefind (tamamen istemci tarafında,
+    veri göndermeden çalışır) kullanır. Analytics veya reklam etkinleştirildiğinde ilgili üçüncü
+    taraf hizmetler (Google) de devreye girer.
+  </p>
+
+  <h2>Haklarınız</h2>
+  <p>
+    6698 sayılı Kişisel Verilerin Korunması Kanunu (KVKK) kapsamındaki haklarınız ve talepleriniz
+    için
+    {
+      contactEmail.startsWith('[') ? (
+        ' iletişim sayfamızdaki güncel e-posta adresi üzerinden'
+      ) : (
+        <a href={`mailto:${contactEmail}`}> {contactEmail} </a>
+      )
+    } bize ulaşabilirsiniz.
+  </p>
+
+  <h2>Politika güncellemeleri</h2>
+  <p>
+    Bu politika, hizmetlerimizdeki değişikliklere bağlı olarak güncellenebilir. Güncel sürüm her
+    zaman bu sayfada yayımlanır.
+  </p>
+</StaticPageLayout>

@@ -1,0 +1,74 @@
+---
+import { buildBreadcrumbSchema } from '../../lib/schema';
+import JsonLd from '../seo/JsonLd.astro';
+
+export interface BreadcrumbItem {
+  label: string;
+  path: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const homeItem: BreadcrumbItem = { label: 'Ana Sayfa', path: '/' };
+const allItems = [homeItem, ...items];
+const schema = buildBreadcrumbSchema(allItems);
+---
+
+<JsonLd data={schema} />
+<nav class="breadcrumbs" aria-label="Sayfa içi konum (breadcrumb)">
+  <ol>
+    {
+      allItems.map((item, index) => (
+        <li>
+          {index === allItems.length - 1 ? (
+            <span aria-current="page">{item.label}</span>
+          ) : (
+            <a href={item.path}>{item.label}</a>
+          )}
+          {index < allItems.length - 1 && (
+            <span class="separator" aria-hidden="true">
+              /
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .breadcrumbs {
+    overflow-x: auto;
+  }
+  .breadcrumbs ol {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .breadcrumbs li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .breadcrumbs a {
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+  .breadcrumbs a:hover {
+    color: var(--color-brand-700);
+  }
+  .breadcrumbs [aria-current='page'] {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+  .separator {
+    color: var(--color-border-strong);
+  }
+</style>

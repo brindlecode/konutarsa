@@ -1,0 +1,41 @@
+---
+interface Props {
+  answer: string;
+}
+const { answer } = Astro.props;
+---
+
+<section class="answer-box" aria-labelledby="answer-box-heading">
+  <h2 id="answer-box-heading">Kısa cevap</h2>
+  <p>{answer}</p>
+</section>
+
+<style>
+  .answer-box {
+    background-color: var(--color-brand-100);
+    border: 1px solid var(--color-brand-500);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+  }
+  .answer-box h2 {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-brand-700);
+    margin-bottom: var(--space-2);
+  }
+  .answer-box p {
+    font-size: var(--text-md);
+    font-weight: 600;
+    color: var(--color-brand-900);
+    max-width: 70ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    .answer-box p {
+      color: var(--color-text);
+    }
+  }
+  :root[data-theme='dark'] .answer-box p {
+    color: var(--color-text);
+  }
+</style>

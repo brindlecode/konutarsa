@@ -1,0 +1,157 @@
+---
+import '../styles/reset.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/typography.css';
+import '../styles/print.css';
+
+import SeoHead from '../components/seo/SeoHead.astro';
+import SocialMeta from '../components/seo/SocialMeta.astro';
+import JsonLd from '../components/seo/JsonLd.astro';
+import SkipLink from '../components/common/SkipLink.astro';
+import ConsentBanner from '../components/common/ConsentBanner.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+
+import {
+  resolveTitle,
+  resolveDescription,
+  resolveCanonical,
+  resolvePageRobots,
+  ogImageUrl,
+  SITE,
+} from '../lib/seo';
+import { buildOrganizationSchema, buildWebsiteSchema } from '../lib/schema';
+import { isAnalyticsEnabled } from '../lib/analytics';
+import { isAdsenseEnabled } from '../lib/ads';
+
+interface Props {
+  title: string;
+  titleOverride?: string;
+  descriptionOverride?: string;
+  excerpt?: string;
+  quickAnswer?: string;
+  path: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+  canonicalOverride?: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  jsonLd?: object | object[];
+  isHome?: boolean;
+}
+
+const {
+  title,
+  titleOverride,
+  descriptionOverride,
+  excerpt,
+  quickAnswer,
+  path,
+  noindex = false,
+  nofollow = false,
+  canonicalOverride,
+  ogImage,
+  type = 'website',
+  publishedAt,
+  updatedAt,
+  jsonLd,
+  isHome = false,
+} = Astro.props;
+
+const resolvedTitle = isHome ? title : resolveTitle(titleOverride, title);
+const resolvedDescription = resolveDescription({ descriptionOverride, excerpt, quickAnswer });
+const canonical = resolveCanonical(path, canonicalOverride);
+const robotsContent = resolvePageRobots({ noindex, nofollow });
+const image = ogImageUrl(ogImage, '/og-default.png');
+
+const baseJsonLd = [buildOrganizationSchema(), buildWebsiteSchema()];
+const pageJsonLd = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+const allJsonLd = [...baseJsonLd, ...pageJsonLd];
+
+const gaEnabled = isAnalyticsEnabled();
+const adsenseEnabled = isAdsenseEnabled();
+const showConsentBanner = gaEnabled || adsenseEnabled;
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT;
+const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
+const cfAnalyticsToken = import.meta.env.PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN;
+---
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <SeoHead
+      title={resolvedTitle}
+      description={resolvedDescription}
+      canonical={canonical}
+      robotsContent={robotsContent}
+    />
+    <SocialMeta
+      title={resolvedTitle}
+      description={resolvedDescription}
+      url={canonical}
+      image={image}
+      type={type}
+      publishedAt={publishedAt}
+      updatedAt={updatedAt}
+    />
+    <JsonLd data={allJsonLd} />
+
+    {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
+    {bingVerification && <meta name="msvalidate.01" content={bingVerification} />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} RSS`} href="/rss.xml" />
+    <meta name="theme-color" content="#0a1d30" />
+
+    {gaEnabled && <meta name="ga-measurement-id" content={gaId} />}
+
+    {
+      adsenseEnabled && (
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+          crossorigin="anonymous"
+          is:inline
+        />
+      )
+    }
+  </head>
+  <body>
+    <SkipLink />
+    <Header />
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    {showConsentBanner && <ConsentBanner />}
+
+    {
+      /*
+        Aynı-origin harici dosya: sıkı CSP (script-src 'self') altında satır
+        içi script çalıştırmadan GA4'ü onay sonrası (consent-gated) yükler.
+        gaEnabled false ise script yalnızca window.trackEvent'i no-op yapar.
+      */
+    }
+    <script src="/scripts/ga-loader.js" is:inline></script>
+
+    {
+      cfAnalyticsToken && (
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${cfAnalyticsToken}"}`}
+          is:inline
+        />
+      )
+    }
+  </body>
+</html>

@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/common/Container.astro';
+import Breadcrumbs from '../../components/common/Breadcrumbs.astro';
+import EmptyState from '../../components/common/EmptyState.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+import { slugify } from '../../lib/slug';
+
+const allSummaries = await getAllPublishedSummaries();
+const tagMap = new Map<string, { slug: string; label: string; count: number }>();
+for (const summary of allSummaries) {
+  for (const tag of summary.tags) {
+    const tagSlug = slugify(tag);
+    const existing = tagMap.get(tagSlug);
+    tagMap.set(tagSlug, {
+      slug: tagSlug,
+      label: existing?.label ?? tag,
+      count: (existing?.count ?? 0) + 1,
+    });
+  }
+}
+const tags = [...tagMap.values()].sort((a, b) => b.count - a.count);
+---
+
+<BaseLayout
+  title="Etiketler"
+  descriptionOverride="KonutArsa içeriklerinde kullanılan tüm etiketler."
+  path="/etiket/"
+  noindex
+>
+  <Container class="tags-page">
+    <Breadcrumbs items={[{ label: 'Etiketler', path: '/etiket/' }]} />
+    <h1>Etiketler</h1>
+    {
+      tags.length > 0 ? (
+        <ul class="tags-list">
+          {tags.map((tag) => (
+            <li>
+              <a href={`/etiket/${tag.slug}/`} class="badge badge-neutral">
+                {tag.label} <span class="tag-count">({tag.count})</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <EmptyState />
+      )
+    }
+  </Container>
+</BaseLayout>
+
+<style>
+  .tags-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .tag-count {
+    color: var(--color-text-muted);
+  }
+</style>

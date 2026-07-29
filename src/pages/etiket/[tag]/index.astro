@@ -1,0 +1,43 @@
+---
+import CategoryLayout from '../../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../../lib/content';
+import { slugify } from '../../../lib/slug';
+
+const MIN_PUBLISHED_FOR_INDEXABLE_TAG = 3;
+
+export async function getStaticPaths() {
+  const allSummaries = await getAllPublishedSummaries();
+  const tagMap = new Map<string, { slug: string; label: string; count: number }>();
+
+  for (const summary of allSummaries) {
+    for (const tag of summary.tags) {
+      const tagSlug = slugify(tag);
+      const existing = tagMap.get(tagSlug);
+      tagMap.set(tagSlug, {
+        slug: tagSlug,
+        label: existing?.label ?? tag,
+        count: (existing?.count ?? 0) + 1,
+      });
+    }
+  }
+
+  return [...tagMap.values()].map((tag) => ({ params: { tag: tag.slug }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.tags.some((t) => slugify(t) === tag.slug));
+const isThinTag = items.length < MIN_PUBLISHED_FOR_INDEXABLE_TAG;
+---
+
+<CategoryLayout
+  title={`"${tag.label}" etiketli içerikler`}
+  description={`"${tag.label}" etiketiyle işaretlenmiş KonutArsa içerikleri.`}
+  path={`/etiket/${tag.slug}/`}
+  items={items}
+  breadcrumbItems={[
+    { label: 'Etiketler', path: '/etiket/' },
+    { label: tag.label, path: `/etiket/${tag.slug}/` },
+  ]}
+  noindex={isThinTag}
+/>

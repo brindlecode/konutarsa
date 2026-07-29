@@ -1,0 +1,19 @@
+[
+  {
+    "id": "example-ad",
+    "active": false,
+    "advertiser": "",
+    "label": "Reklam",
+    "image": "",
+    "alt": "",
+    "destinationUrl": "",
+    "placement": "article-sidebar",
+    "startAt": "",
+    "endAt": "",
+    "targeting": {
+      "categories": [],
+      "provinces": [],
+      "districts": []
+    }
+  }
+]

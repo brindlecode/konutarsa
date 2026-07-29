@@ -1,0 +1,98 @@
+---
+import { formatDateLong } from '../../lib/dates';
+
+interface SourceItem {
+  key: string;
+  organization: string;
+  title: string;
+  url: string;
+  publishedAt?: Date;
+  accessedAt?: Date;
+  official?: boolean;
+  note?: string;
+}
+
+interface Props {
+  sources: SourceItem[];
+  usageOrder?: string[];
+}
+
+const { sources, usageOrder = [] } = Astro.props;
+
+const bySource = new Map(sources.map((s) => [s.key, s]));
+const orderedKeys = [
+  ...usageOrder,
+  ...sources.map((s) => s.key).filter((k) => !usageOrder.includes(k)),
+];
+const orderedSources = orderedKeys
+  .map((key) => bySource.get(key))
+  .filter((s): s is SourceItem => Boolean(s));
+---
+
+{
+  orderedSources.length > 0 && (
+    <section class="sources-list" aria-labelledby="sources-heading">
+      <h2 id="sources-heading">Kaynaklar</h2>
+      <ol>
+        {orderedSources.map((source, index) => (
+          <li id={`source-${source.key}`}>
+            <span class="source-number">[{index + 1}]</span>
+            <span class="source-body">
+              <a href={source.url} target="_blank" rel="noopener noreferrer">
+                {source.title}
+              </a>
+              <span class="source-meta">
+                {source.organization}
+                {source.official && <span class="badge badge-success">Resmî kaynak</span>}
+                {source.accessedAt && <span> · Erişim: {formatDateLong(source.accessedAt)}</span>}
+              </span>
+              {source.note && <span class="source-note">{source.note}</span>}
+            </span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}
+
+<style>
+  .sources-list h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+  .sources-list ol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .sources-list li {
+    display: flex;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+    scroll-margin-top: var(--space-6);
+  }
+  .source-number {
+    font-weight: 700;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+  .source-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .source-body > a {
+    font-weight: 600;
+  }
+  .source-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+  .source-note {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+/**
+ * Reklam sistemi bilinçli olarak kapalı varsayılan gelir (bkz. madde 22).
+ * AdSense veya doğrudan reklam etkin değilse bu bileşen HİÇBİR ŞEY render
+ * etmez: script yok, boş iframe yok, sahte reklam alanı yok, console hatası
+ * yok — yalnızca ayarlar açıldığında ve gerçek bir kimlik/kreatif
+ * bulunduğunda içerik görünür.
+ */
+import AdsenseSlot from './AdsenseSlot.astro';
+import DirectAd from './DirectAd.astro';
+import { getActiveAdsForPlacement, isAdsenseEnabled } from '../../lib/ads';
+
+interface Props {
+  placement: string;
+  category?: string;
+  provinceSlug?: string;
+  districtSlug?: string;
+  adsenseSlotId?: string;
+  minHeight?: string;
+}
+
+const {
+  placement,
+  category,
+  provinceSlug,
+  districtSlug,
+  adsenseSlotId,
+  minHeight = '250px',
+} = Astro.props;
+
+const directAds = getActiveAdsForPlacement({ placement, category, provinceSlug, districtSlug });
+const showDirect = directAds.length > 0;
+const showAdsense = !showDirect && isAdsenseEnabled() && Boolean(adsenseSlotId);
+const hasAnyAd = showDirect || showAdsense;
+---
+
+{
+  hasAnyAd && (
+    <div class="ad-slot" data-ad-slot style={{ minHeight }}>
+      <span class="ad-slot-label">Reklam</span>
+      {showDirect && directAds[0] && <DirectAd ad={directAds[0]} />}
+      {showAdsense && adsenseSlotId && <AdsenseSlot slotId={adsenseSlotId} />}
+    </div>
+  )
+}
+
+<style>
+  .ad-slot {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  .ad-slot-label {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    align-self: flex-start;
+  }
+</style>

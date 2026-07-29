@@ -1,0 +1,59 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/common/Container.astro';
+import Breadcrumbs, { type BreadcrumbItem } from '../components/common/Breadcrumbs.astro';
+import { formatDateLong } from '../lib/dates';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  breadcrumbItems?: BreadcrumbItem[];
+  updatedAt?: Date;
+  noindex?: boolean;
+}
+
+const { title, description, path, breadcrumbItems = [], updatedAt, noindex } = Astro.props;
+---
+
+<BaseLayout title={title} descriptionOverride={description} path={path} noindex={noindex}>
+  <Container narrow as="article" class="static-page">
+    {breadcrumbItems.length > 0 && <Breadcrumbs items={breadcrumbItems} />}
+    <h1>{title}</h1>
+    {updatedAt && <p class="static-page-updated">Son güncelleme: {formatDateLong(updatedAt)}</p>}
+    <div class="static-page-body">
+      <slot />
+    </div>
+  </Container>
+</BaseLayout>
+
+<style>
+  .static-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .static-page-updated {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .static-page-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    max-width: 70ch;
+  }
+  .static-page-body :global(h2) {
+    margin-top: var(--space-6);
+  }
+  .static-page-body :global(ul) {
+    padding-left: 1.4em;
+    list-style: disc;
+  }
+  .static-page-body :global(li + li) {
+    margin-top: var(--space-2);
+  }
+</style>

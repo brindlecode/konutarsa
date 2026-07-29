@@ -1,0 +1,69 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+import socialData from '../data/social.json';
+import siteData from '../data/site-content.json';
+
+const updatedAt = new Date('2026-07-20');
+const socialLinks = Object.entries(socialData).filter(([, url]) => Boolean(url));
+const contactEmail = siteData.organization.contactEmail;
+const hasRealEmail = !contactEmail.startsWith('[');
+---
+
+<StaticPageLayout
+  title="İletişim"
+  description="KonutArsa ile iletişime geçin: düzeltme bildirimi, reklam iş birliği veya genel sorularınız için."
+  path="/iletisim/"
+  breadcrumbItems={[{ label: 'İletişim', path: '/iletisim/' }]}
+  updatedAt={updatedAt}
+>
+  <p>Bize aşağıdaki konularda ulaşabilirsiniz:</p>
+  <ul>
+    <li>İçerikte fark ettiğiniz bir hata veya güncelliğini yitirmiş bir bilgi</li>
+    <li>
+      Reklam veya sponsorlu içerik iş birliği talepleri (bkz. <a href="/reklam-politikasi/"
+        >Reklam Politikası</a
+      >)
+    </li>
+    <li>Genel sorular ve geri bildirimler</li>
+  </ul>
+
+  <h2>E-posta</h2>
+  {
+    hasRealEmail ? (
+      <p>
+        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+      </p>
+    ) : (
+      <p>
+        İletişim e-posta adresi henüz tanımlanmadı. Bu bilgi <code>src/data/site-content.json</code>{' '}
+        dosyasındaki <code>organization.contactEmail</code> alanından merkezi olarak
+        güncellenebilir.
+      </p>
+    )
+  }
+
+  <h2>Düzeltme bildirimi</h2>
+  <p>
+    Bir içerikte hata, güncelliğini yitirmiş bilgi veya kaynak sorunu fark ettiyseniz, lütfen
+    yukarıdaki e-posta adresi üzerinden bize bildirin. Bildirimler değerlendirilir ve gerekli
+    görülen düzeltmeler, ilgili içeriğin "Düzeltme geçmişi" bölümünde şeffaf şekilde belirtilir
+    (bkz. <a href="/duzeltme-politikasi/">Düzeltme Politikası</a>).
+  </p>
+
+  {
+    socialLinks.length > 0 && (
+      <>
+        <h2>Sosyal medya</h2>
+        <ul>
+          {socialLinks.map(([key, url]) => (
+            <li>
+              <a href={url as string} rel="me noopener noreferrer" target="_blank">
+                {key}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+</StaticPageLayout>

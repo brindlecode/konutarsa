@@ -1,0 +1,15 @@
+---
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.collection === 'mevzuat');
+---
+
+<CategoryLayout
+  title="Mevzuat"
+  description="Tapu mevzuatı, imar mevzuatı, vergiler, harçlar ve kira hukuku konularında güncel ve kaynaklı rehberler."
+  path="/mevzuat/"
+  items={items}
+  breadcrumbItems={[{ label: 'Mevzuat', path: '/mevzuat/' }]}
+/>

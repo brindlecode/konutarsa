@@ -1,0 +1,55 @@
+---
+import { formatDateLong } from '../../lib/dates';
+
+interface Correction {
+  date: Date;
+  description: string;
+}
+
+interface Props {
+  corrections: Correction[];
+}
+const { corrections } = Astro.props;
+const sorted = [...corrections].sort((a, b) => b.date.getTime() - a.date.getTime());
+---
+
+{
+  sorted.length > 0 && (
+    <section class="correction-history" aria-labelledby="correction-history-heading">
+      <h2 id="correction-history-heading">Düzeltme geçmişi</h2>
+      <ul>
+        {sorted.map((correction) => (
+          <li>
+            <time datetime={correction.date.toISOString()}>{formatDateLong(correction.date)}</time>
+            <span>{correction.description}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .correction-history h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+  .correction-history ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .correction-history li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--text-sm);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--color-surface-muted);
+    border-radius: var(--radius-md);
+  }
+  .correction-history time {
+    font-weight: 700;
+    color: var(--color-text-muted);
+  }
+</style>

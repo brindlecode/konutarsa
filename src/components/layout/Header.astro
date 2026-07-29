@@ -1,0 +1,122 @@
+---
+import navigationData from '../../data/navigation.json';
+import SearchButton from '../common/SearchButton.astro';
+import MobileNavigation from './MobileNavigation.astro';
+
+const items = navigationData.header;
+const currentPath = Astro.url.pathname;
+
+function isActive(href: string): boolean {
+  return href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+}
+---
+
+<header class="site-header" data-site-header>
+  <div class="container site-header-inner">
+    <a href="/" class="brand" aria-label="KonutArsa ana sayfa">
+      <svg aria-hidden="true" width="28" height="28" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="7" fill="var(--color-brand-700)"></rect>
+        <path
+          d="M8 17.5L16 10l8 7.5"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+        <path
+          d="M11 16v7.5h10V16"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      <span class="brand-name">KonutArsa</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Ana site navigasyonu">
+      <ul>
+        {
+          items.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <SearchButton />
+      <MobileNavigation />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--color-surface-alt);
+    border-bottom: 1px solid var(--color-border);
+    min-height: var(--header-height);
+  }
+
+  .site-header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: var(--header-height);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: 800;
+    font-size: var(--text-md);
+    color: var(--color-text);
+    margin-right: auto;
+  }
+
+  .brand:hover {
+    color: var(--color-text);
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .desktop-nav ul {
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .desktop-nav a {
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    padding-block: var(--space-2);
+    border-bottom: 2px solid transparent;
+  }
+
+  .desktop-nav a:hover,
+  .desktop-nav a[aria-current='page'] {
+    color: var(--color-brand-700);
+    border-bottom-color: var(--color-brand-700);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 64rem) {
+    .desktop-nav {
+      display: block;
+      margin-inline: auto;
+    }
+  }
+</style>

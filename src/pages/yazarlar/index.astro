@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/common/Container.astro';
+import Breadcrumbs from '../../components/common/Breadcrumbs.astro';
+import { toAuthorSummary } from '../../lib/content';
+
+const authorEntries = await getCollection('authors');
+const authors = authorEntries.map(toAuthorSummary);
+---
+
+<BaseLayout
+  title="Yazarlar"
+  descriptionOverride="KonutArsa içeriklerini hazırlayan ve gözden geçiren yazar ve editörler."
+  path="/yazarlar/"
+>
+  <Container class="authors-page">
+    <Breadcrumbs items={[{ label: 'Yazarlar', path: '/yazarlar/' }]} />
+    <h1>Yazarlar</h1>
+    <div class="authors-grid">
+      {
+        authors.map((author) => (
+          <a href={author.url} class="author-card card">
+            <span class="author-card-name">{author.name}</span>
+            {author.role && <span class="author-card-role">{author.role}</span>}
+          </a>
+        ))
+      }
+    </div>
+  </Container>
+</BaseLayout>
+
+<style>
+  .authors-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .authors-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  }
+  .author-card {
+    padding: var(--space-5);
+    color: var(--color-text);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .author-card-name {
+    font-weight: 700;
+    font-size: var(--text-md);
+  }
+  .author-card-role {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+interface Props {
+  message?: string;
+}
+const { message = 'Bu bölüm için içerikler hazırlanıyor.' } = Astro.props;
+---
+
+<div class="empty-state" role="status">
+  <svg
+    aria-hidden="true"
+    width="32"
+    height="32"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+    <path d="M3 9h18"></path>
+    <path d="M8 13h8"></path>
+  </svg>
+  <p>{message}</p>
+</div>
+
+<style>
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-8) var(--space-4);
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+</style>

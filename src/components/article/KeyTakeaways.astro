@@ -1,0 +1,52 @@
+---
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <section class="key-takeaways" aria-labelledby="key-takeaways-heading">
+      <h2 id="key-takeaways-heading">Önemli noktalar</h2>
+      <ul>
+        {items.map((item) => (
+          <li>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="10" fill="var(--color-success-bg)" />
+              <path
+                d="M6 10.5l2.5 2.5 5.5-6"
+                stroke="var(--color-success)"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .key-takeaways h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+  .key-takeaways ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .key-takeaways li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .key-takeaways li svg {
+    flex-shrink: 0;
+    margin-top: 0.1em;
+  }
+</style>

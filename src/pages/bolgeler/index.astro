@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/common/Container.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+import provinces from '../../data/locations/provinces.json';
+
+const allSummaries = await getAllPublishedSummaries();
+const bolgeAnalizleriCount = allSummaries.filter((s) => s.collection === 'bolge-analizleri').length;
+---
+
+<BaseLayout
+  title="Bölgeler"
+  descriptionOverride="Türkiye genelinde il, ilçe ve mahalle bazlı konum araçları ve bölge analizleri."
+  path="/bolgeler/"
+>
+  <Container class="bolgeler-page">
+    <h1>Bölgeler</h1>
+    <p>
+      KonutArsa, Türkiye genelinde {provinces.length} il ve binlerce mahalleyi kapsayan bir konum veri
+      tabanına sahiptir. Bu veri, yalnızca yayımlanmış özgün içeriği olan bölgeler için sayfa üretmek
+      ve konum bulucu aracını desteklemek amacıyla kullanılır.
+    </p>
+
+    <div class="bolgeler-cards">
+      <a href="/bolgeler/konum-bul/" class="card bolgeler-card">
+        <h2>Konum bulucu</h2>
+        <p>
+          İl, ilçe ve mahalle hiyerarşisinde arama yapın; doğru konum referansını bulup kopyalayın.
+        </p>
+      </a>
+      <a href="/bolge-analizleri/" class="card bolgeler-card">
+        <h2>Bölge analizleri</h2>
+        <p>{bolgeAnalizleriCount} yayımlanmış bölge analizi içeriğini inceleyin.</p>
+      </a>
+    </div>
+  </Container>
+</BaseLayout>
+
+<style>
+  .bolgeler-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    max-width: 60ch;
+  }
+  .bolgeler-cards {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    max-width: none;
+  }
+  .bolgeler-card {
+    padding: var(--space-5);
+    color: var(--color-text);
+  }
+  .bolgeler-card h2 {
+    font-size: var(--text-md);
+    margin-bottom: var(--space-2);
+  }
+  .bolgeler-card p {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    max-width: none;
+  }
+</style>

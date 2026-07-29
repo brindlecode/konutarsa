@@ -1,0 +1,292 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/common/Container.astro';
+---
+
+<BaseLayout
+  title="Arama"
+  descriptionOverride="KonutArsa içeriklerinde arayın: konut rehberi, arsa rehberi, bölge analizleri, mevzuat ve daha fazlası."
+  path="/arama/"
+  noindex
+>
+  <Container class="search-page" narrow>
+    <h1>Sitede ara</h1>
+
+    <form id="search-form" role="search" aria-label="Site içi arama">
+      <label for="search-input" class="visually-hidden">Arama terimi</label>
+      <div class="search-input-row">
+        <input
+          type="search"
+          id="search-input"
+          name="q"
+          placeholder="Örn. hisseli tapu, imar durumu, kat mülkiyeti..."
+          autocomplete="off"
+        />
+        <button type="button" id="search-clear" class="button button-secondary" hidden
+          >Temizle</button
+        >
+      </div>
+    </form>
+
+    <div id="search-filters" class="search-filters" hidden>
+      <span class="search-filters-label">İçerik türüne göre filtrele:</span>
+      <div id="search-filter-chips" class="search-filter-chips"></div>
+    </div>
+
+    <p id="search-status" role="status" aria-live="polite" class="search-status"></p>
+
+    <ul id="search-results" class="search-results"></ul>
+  </Container>
+</BaseLayout>
+
+<style>
+  .search-page {
+    padding-block: var(--space-6) var(--space-9);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .search-input-row {
+    display: flex;
+    gap: var(--space-3);
+  }
+  #search-input {
+    flex: 1;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    font-size: var(--text-md);
+    background-color: var(--color-surface-alt);
+    color: var(--color-text);
+    min-height: 44px;
+  }
+  .search-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .search-filters-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+  .search-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .filter-chip {
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    border: 1px solid var(--color-border-strong);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-muted);
+    min-height: 36px;
+  }
+  .filter-chip[aria-pressed='true'] {
+    background-color: var(--color-brand-700);
+    border-color: var(--color-brand-700);
+    color: var(--color-text-inverse);
+  }
+  .search-status {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .search-results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+  .search-result {
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .search-result h2 {
+    font-size: var(--text-md);
+  }
+  .search-result h2 a {
+    text-decoration: none;
+  }
+  .search-result-meta {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+  }
+  .search-result-excerpt {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .search-result-excerpt :global(mark) {
+    background-color: var(--color-warning-bg);
+    color: var(--color-text);
+    font-weight: 700;
+  }
+</style>
+
+<script>
+  interface PagefindResultData {
+    url: string;
+    excerpt: string;
+    meta: Record<string, string>;
+    filters: Record<string, string[]>;
+  }
+
+  interface PagefindSearchResult {
+    id: string;
+    data: () => Promise<PagefindResultData>;
+  }
+
+  interface PagefindSearchResponse {
+    results: PagefindSearchResult[];
+    filters: Record<string, Record<string, number>>;
+  }
+
+  interface PagefindApi {
+    init: () => Promise<void>;
+    search: (
+      query: string,
+      options?: { filters?: Record<string, string[]> }
+    ) => Promise<PagefindSearchResponse>;
+    filters: () => Promise<Record<string, Record<string, number>>>;
+  }
+
+  const input = document.getElementById('search-input') as HTMLInputElement | null;
+  const clearButton = document.getElementById('search-clear') as HTMLButtonElement | null;
+  const statusEl = document.getElementById('search-status');
+  const resultsEl = document.getElementById('search-results');
+  const filtersContainer = document.getElementById('search-filters');
+  const filterChipsEl = document.getElementById('search-filter-chips');
+
+  let pagefind: PagefindApi | null = null;
+  let activeContentType: string | null = null;
+  let debounceTimer: number | undefined;
+
+  async function loadPagefind(): Promise<PagefindApi | null> {
+    if (pagefind) return pagefind;
+    try {
+      // @ts-expect-error - pagefind.js only exists in the built dist/ output, not during type-checking
+      const mod = await import(/* @vite-ignore */ '/pagefind/pagefind.js');
+      await mod.init();
+      pagefind = mod;
+      return mod;
+    } catch {
+      if (statusEl) {
+        statusEl.textContent =
+          'Arama dizini yüklenemedi. Bu özellik yalnızca yayınlanmış (build alınmış) sitede çalışır.';
+      }
+      return null;
+    }
+  }
+
+  function renderResultCount(count: number, query: string) {
+    if (!statusEl) return;
+    if (query.trim().length === 0) {
+      statusEl.textContent = '';
+      return;
+    }
+    statusEl.textContent =
+      count === 0 ? `"${query}" için sonuç bulunamadı.` : `"${query}" için ${count} sonuç bulundu.`;
+  }
+
+  function renderFilterChips(filters: Record<string, Record<string, number>>) {
+    const contentTypeFilter = filters['icerik-turu'];
+    if (!contentTypeFilter || !filterChipsEl || !filtersContainer) return;
+    const entries = Object.entries(contentTypeFilter);
+    if (entries.length === 0) return;
+
+    filterChipsEl.innerHTML = '';
+    filtersContainer.hidden = false;
+
+    for (const [label, count] of entries) {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'filter-chip';
+      chip.textContent = `${label} (${count})`;
+      chip.setAttribute('aria-pressed', String(activeContentType === label));
+      chip.addEventListener('click', () => {
+        activeContentType = activeContentType === label ? null : label;
+        void runSearch();
+      });
+      filterChipsEl.appendChild(chip);
+    }
+  }
+
+  async function runSearch() {
+    if (!input || !resultsEl) return;
+    const query = input.value.trim();
+    clearButton && (clearButton.hidden = query.length === 0);
+
+    if (query.length === 0) {
+      resultsEl.innerHTML = '';
+      renderResultCount(0, '');
+      return;
+    }
+
+    const api = await loadPagefind();
+    if (!api) return;
+
+    const filters = activeContentType ? { 'icerik-turu': [activeContentType] } : undefined;
+    const search = await api.search(query, { filters });
+    renderResultCount(search.results.length, query);
+
+    const allFilters = await api.filters();
+    renderFilterChips(allFilters);
+
+    resultsEl.innerHTML = '';
+    const topResults = search.results.slice(0, 20);
+    for (const result of topResults) {
+      const data = await result.data();
+      const li = document.createElement('li');
+      li.className = 'search-result';
+      const contentType = data.meta['icerik-turu']
+        ? `<span>${data.meta['icerik-turu']}</span>`
+        : '';
+      const author = data.meta['yazar'] ? `<span>${data.meta['yazar']}</span>` : '';
+      li.innerHTML = `
+        <h2><a href="${data.url}">${data.meta.title ?? data.url}</a></h2>
+        <div class="search-result-meta">${contentType}${author}</div>
+        <p class="search-result-excerpt">${data.excerpt}</p>
+      `;
+      resultsEl.appendChild(li);
+    }
+  }
+
+  input?.addEventListener('input', () => {
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(() => {
+      void runSearch();
+      if (input.value.trim().length > 0) {
+        window.trackEvent?.('internal_search', { query_length: input.value.trim().length });
+      }
+    }, 200);
+  });
+
+  clearButton?.addEventListener('click', () => {
+    if (!input) return;
+    input.value = '';
+    input.focus();
+    void runSearch();
+  });
+
+  resultsEl?.addEventListener('click', (event) => {
+    const link = (event.target as HTMLElement).closest('a');
+    if (link) window.trackEvent?.('search_result_click', { url: link.getAttribute('href') ?? '' });
+  });
+
+  // Ön yükleme: kullanıcı yazmaya başlamadan Pagefind'ı yüklemeyiz (JS bütçesi
+  // için); yalnızca sayfa etkileşime geçtiğinde (odaklandığında) hazırlanır.
+  input?.addEventListener('focus', () => void loadPagefind(), { once: true });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQuery = urlParams.get('q');
+  if (initialQuery && input) {
+    input.value = initialQuery;
+    void runSearch();
+  }
+</script>

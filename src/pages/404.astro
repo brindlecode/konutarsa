@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/common/Container.astro';
+import SearchButton from '../components/common/SearchButton.astro';
+import navigationData from '../data/navigation.json';
+---
+
+<BaseLayout
+  title="Sayfa bulunamadı"
+  descriptionOverride="Aradığınız sayfa bulunamadı. Ana kategorilere göz atın veya sitede arama yapın."
+  path="/404/"
+  noindex
+  nofollow
+>
+  <Container class="not-found-page">
+    <p class="not-found-code">404</p>
+    <h1>Aradığınız sayfa bulunamadı</h1>
+    <p>
+      Bu sayfa taşınmış, kaldırılmış olabilir veya hiç var olmamış olabilir. Aşağıdan sitede arama
+      yapabilir veya ana kategorilerden birine göz atabilirsiniz.
+    </p>
+
+    <div class="not-found-search">
+      <SearchButton />
+    </div>
+
+    <nav aria-label="Ana kategoriler">
+      <ul class="not-found-links">
+        {
+          navigationData.header.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a href="/" class="button button-primary">Ana sayfaya dön</a>
+  </Container>
+</BaseLayout>
+
+<style>
+  .not-found-page {
+    padding-block: var(--space-8) var(--space-9);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    max-width: 40rem;
+  }
+  .not-found-code {
+    font-size: var(--text-3xl);
+    font-weight: 800;
+    color: var(--color-brand-500);
+  }
+  .not-found-search {
+    margin-top: var(--space-2);
+  }
+  .not-found-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+  .not-found-links a {
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface-muted);
+    font-weight: 600;
+  }
+</style>

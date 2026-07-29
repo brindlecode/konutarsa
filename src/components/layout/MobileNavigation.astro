@@ -1,0 +1,171 @@
+---
+import navigationData from '../../data/navigation.json';
+
+const items = navigationData.header;
+---
+
+<details class="mobile-nav" data-mobile-nav>
+  <summary class="mobile-nav-toggle" aria-label="Menüyü aç veya kapat">
+    <svg
+      class="icon-burger"
+      aria-hidden="true"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    >
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+    <svg
+      class="icon-close"
+      aria-hidden="true"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    >
+      <line x1="5" y1="5" x2="19" y2="19"></line>
+      <line x1="19" y1="5" x2="5" y2="19"></line>
+    </svg>
+    <span class="visually-hidden">Menü</span>
+  </summary>
+  <nav class="mobile-nav-panel" data-mobile-nav-panel aria-label="Mobil site navigasyonu">
+    <ul>
+      {
+        items.map((item) => (
+          <li>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</details>
+
+<style>
+  .mobile-nav {
+    display: block;
+  }
+
+  .mobile-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    list-style: none;
+    color: var(--color-text);
+  }
+
+  .mobile-nav-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-nav-toggle:hover {
+    background-color: var(--color-surface-muted);
+  }
+
+  .icon-close {
+    display: none;
+  }
+
+  .mobile-nav[open] .icon-burger {
+    display: none;
+  }
+
+  .mobile-nav[open] .icon-close {
+    display: block;
+  }
+
+  .mobile-nav-panel {
+    position: absolute;
+    inset-inline: var(--space-4);
+    top: var(--header-height);
+    background-color: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-3);
+    z-index: 60;
+  }
+
+  .mobile-nav-panel ul {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-nav-panel a {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    min-height: 44px;
+  }
+
+  .mobile-nav-panel a:hover {
+    background-color: var(--color-surface-muted);
+    color: var(--color-text);
+  }
+
+  @media (min-width: 64rem) {
+    .mobile-nav {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('[data-mobile-nav]').forEach((details) => {
+    const summary = details.querySelector('summary');
+    const panel = details.querySelector<HTMLElement>('[data-mobile-nav-panel]');
+    if (!summary || !panel) return;
+
+    function getFocusable(): HTMLElement[] {
+      if (!summary || !panel) return [];
+      return [summary, ...Array.from(panel.querySelectorAll<HTMLElement>('a, button'))];
+    }
+
+    details.addEventListener('toggle', () => {
+      summary.setAttribute('aria-expanded', String(details.open));
+      if (details.open) {
+        panel.querySelector<HTMLElement>('a')?.focus();
+      }
+    });
+
+    details.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && details.open) {
+        details.open = false;
+        summary.focus();
+        return;
+      }
+      if (event.key === 'Tab' && details.open) {
+        const focusable = getFocusable();
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first || !last) return;
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (details.open && event.target instanceof Node && !details.contains(event.target)) {
+        details.open = false;
+      }
+    });
+  });
+</script>

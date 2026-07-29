@@ -1,0 +1,329 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/common/Container.astro';
+import CategoryCard from '../components/cards/CategoryCard.astro';
+import ArticleCard from '../components/cards/ArticleCard.astro';
+import EmptyState from '../components/common/EmptyState.astro';
+import SearchButton from '../components/common/SearchButton.astro';
+import { getAllPublishedSummaries } from '../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const latest = allSummaries.slice(0, 6);
+const bolgeAnalizleri = allSummaries.filter((s) => s.collection === 'bolge-analizleri').slice(0, 3);
+const konutRehberi = allSummaries.filter((s) => s.collection === 'konut-rehberi').slice(0, 3);
+const arsaRehberi = allSummaries.filter((s) => s.collection === 'arsa-rehberi').slice(0, 3);
+const piyasaRaporlari = allSummaries.filter((s) => s.collection === 'piyasa-raporlari').slice(0, 3);
+
+const categories = [
+  {
+    title: 'Konut Rehberi',
+    description: 'Ev alırken bilinmesi gereken kat mülkiyeti, iskân, kredi ve daha fazlası.',
+    href: '/konut-rehberi/',
+  },
+  {
+    title: 'Arsa Rehberi',
+    description: 'İmar durumu, hisseli tapu, TAKS/KAKS ve arsa alım süreci.',
+    href: '/arsa-rehberi/',
+  },
+  {
+    title: 'Bölge Analizleri',
+    description: 'İl, ilçe ve mahalle bazlı araştırma rehberleri.',
+    href: '/bolge-analizleri/',
+  },
+  {
+    title: 'Piyasa Raporları',
+    description: 'TCMB ve TÜİK verilerini nasıl takip edeceğinizi öğrenin.',
+    href: '/piyasa-raporlari/',
+  },
+  {
+    title: 'Mevzuat',
+    description: 'Tapu, imar, vergi ve harç konularında güncel mevzuat rehberleri.',
+    href: '/mevzuat/',
+  },
+  {
+    title: 'Gayrimenkul Sözlüğü',
+    description: 'TAKS, KAKS, şufa hakkı gibi teknik terimlerin açık tanımları.',
+    href: '/sozluk/',
+  },
+];
+---
+
+<BaseLayout
+  title="KonutArsa — Konut ve Arsa Rehberi"
+  descriptionOverride="Konut ve arsa almadan önce araştırın: tapu, imar, bölge, kira getirisi ve satın alma risklerini sade ve kaynaklı içeriklerle inceleyin."
+  path="/"
+  isHome
+>
+  <section class="hero">
+    <Container class="hero-inner">
+      <p class="hero-eyebrow">İlan değil, analiz.</p>
+      <h1>Konut veya arsa almadan önce araştırın.</h1>
+      <p class="hero-lede">
+        Tapu, imar, bölge, fiyat, kira getirisi ve satın alma risklerini sade ve kaynaklı
+        içeriklerle inceleyin.
+      </p>
+      <div class="hero-actions">
+        <a href="/konut-rehberi/" class="button button-primary">Konut rehberlerini incele</a>
+        <a href="/arsa-rehberi/" class="button button-secondary">Arsa rehberlerini incele</a>
+        <a href="/bolge-analizleri/" class="button button-secondary">Bölge analizi bul</a>
+      </div>
+      <div class="hero-search">
+        <SearchButton />
+      </div>
+    </Container>
+  </section>
+
+  <Container class="home-section">
+    <h2>Ana konular</h2>
+    <div class="category-grid">
+      {categories.map((category) => <CategoryCard {...category} />)}
+    </div>
+  </Container>
+
+  <Container class="home-section">
+    <div class="section-heading-row">
+      <h2>Son yayımlanan içerikler</h2>
+    </div>
+    {
+      latest.length > 0 ? (
+        <div class="article-grid">
+          {latest.map((item) => (
+            <ArticleCard item={item} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState />
+      )
+    }
+  </Container>
+
+  <Container class="home-section">
+    <div class="section-heading-row">
+      <h2>Bölge analizleri</h2>
+      <a href="/bolge-analizleri/">Tümünü gör →</a>
+    </div>
+    {
+      bolgeAnalizleri.length > 0 ? (
+        <div class="article-grid">
+          {bolgeAnalizleri.map((item) => (
+            <ArticleCard item={item} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState />
+      )
+    }
+  </Container>
+
+  <Container class="home-section">
+    <div class="section-heading-row">
+      <h2>Konut rehberleri</h2>
+      <a href="/konut-rehberi/">Tümünü gör →</a>
+    </div>
+    {
+      konutRehberi.length > 0 ? (
+        <div class="article-grid">
+          {konutRehberi.map((item) => (
+            <ArticleCard item={item} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState />
+      )
+    }
+  </Container>
+
+  <Container class="home-section">
+    <div class="section-heading-row">
+      <h2>Arsa rehberleri</h2>
+      <a href="/arsa-rehberi/">Tümünü gör →</a>
+    </div>
+    {
+      arsaRehberi.length > 0 ? (
+        <div class="article-grid">
+          {arsaRehberi.map((item) => (
+            <ArticleCard item={item} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState />
+      )
+    }
+  </Container>
+
+  <Container class="home-section">
+    <div class="section-heading-row">
+      <h2>Güncel piyasa raporları</h2>
+      <a href="/piyasa-raporlari/">Tümünü gör →</a>
+    </div>
+    {
+      piyasaRaporlari.length > 0 ? (
+        <div class="article-grid">
+          {piyasaRaporlari.map((item) => (
+            <ArticleCard item={item} />
+          ))}
+        </div>
+      ) : (
+        <EmptyState />
+      )
+    }
+  </Container>
+
+  <section class="location-finder-promo">
+    <Container class="location-finder-inner">
+      <div>
+        <h2>81 il, 973 ilçe, binlerce mahalle</h2>
+        <p>
+          Konum bulucu aracıyla il, ilçe ve mahalle hiyerarşisinde arama yapın; ilgili bölge için
+          doğru konum referansını bulun.
+        </p>
+      </div>
+      <a href="/bolgeler/konum-bul/" class="button button-primary">Konum bulucuyu dene</a>
+    </Container>
+  </section>
+
+  <Container class="home-section trust-section">
+    <h2>Editoryal yaklaşımımız</h2>
+    <div class="trust-grid">
+      <div class="card trust-card">
+        <h3>Kaynaklı</h3>
+        <p>
+          Önemli iddiaların yanına kaynak referansı ekleriz; kaynak listesi her sayfanın sonunda
+          görünür.
+        </p>
+      </div>
+      <div class="card trust-card">
+        <h3>İnsan kontrolünde</h3>
+        <p>
+          İçerik hazırlığında yapay zekâ desteği kullanılabilir; ancak yayımlanmadan önce insan
+          incelemesinden geçer.
+        </p>
+      </div>
+      <div class="card trust-card">
+        <h3>Bağımsız</h3>
+        <p>İlan yayınlamayız, emlak ofisi değiliz; amacımız araştırmanızı kolaylaştırmaktır.</p>
+      </div>
+    </div>
+    <p class="trust-links">
+      <a href="/editorluk-politikasi/">Editörlük politikamız</a> ·
+      <a href="/kaynak-politikasi/">Kaynak politikamız</a> ·
+      <a href="/yapay-zeka-politikasi/">Yapay zekâ kullanım politikamız</a>
+    </p>
+  </Container>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--color-brand-900), var(--color-brand-700));
+    color: var(--color-text-inverse);
+    padding-block: var(--space-8);
+  }
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 46rem;
+  }
+  .hero-eyebrow {
+    font-weight: 700;
+    color: #cfe0f2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: var(--text-sm);
+  }
+  .hero h1 {
+    color: var(--color-text-inverse);
+    font-size: var(--text-3xl);
+  }
+  .hero-lede {
+    color: var(--color-text-inverse-muted);
+    font-size: var(--text-md);
+    max-width: 60ch;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+  .hero-search {
+    margin-top: var(--space-2);
+  }
+  .hero-search :global(.search-button) {
+    color: var(--color-text-inverse);
+  }
+  .hero-search :global(.search-button:hover) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .home-section {
+    padding-block: var(--space-7);
+  }
+  .home-section h2 {
+    margin-bottom: var(--space-4);
+  }
+  .section-heading-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+  .section-heading-row a {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    white-space: nowrap;
+  }
+  .category-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  }
+  .article-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  }
+
+  .location-finder-promo {
+    background-color: var(--color-surface-muted);
+    padding-block: var(--space-7);
+  }
+  .location-finder-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+  .location-finder-inner h2 {
+    font-size: var(--text-xl);
+  }
+  .location-finder-inner p {
+    color: var(--color-text-muted);
+    max-width: 50ch;
+    margin-top: var(--space-2);
+  }
+
+  .trust-grid {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+  .trust-card {
+    padding: var(--space-5);
+  }
+  .trust-card h3 {
+    margin-bottom: var(--space-2);
+  }
+  .trust-card p {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    max-width: none;
+  }
+  .trust-links {
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

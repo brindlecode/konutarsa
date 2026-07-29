@@ -1,0 +1,16 @@
+---
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.collection === 'guncel');
+---
+
+<CategoryLayout
+  title="Güncel"
+  description="Gayrimenkul piyasasını ve mevzuatını ilgilendiren, doğrulanmış ve tarihi belirli güncel gelişmeler."
+  path="/guncel/"
+  items={items}
+  breadcrumbItems={[{ label: 'Güncel', path: '/guncel/' }]}
+  emptyMessage="Bu bölüm için güncel içerikler hazırlanıyor."
+/>

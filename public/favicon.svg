@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="KonutArsa">
+  <rect width="32" height="32" rx="7" fill="#163d61" />
+  <path d="M8 17.5L16 10l8 7.5" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M11 16v7.5h10V16" stroke="#ffffff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+</svg>

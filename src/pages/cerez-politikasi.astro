@@ -1,0 +1,62 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Çerez Politikası"
+  description="KonutArsa'da kullanılan çerez kategorileri, varsayılan ayarlar ve tercihlerinizi nasıl değiştirebileceğiniz."
+  path="/cerez-politikasi/"
+  breadcrumbItems={[{ label: 'Çerez Politikası', path: '/cerez-politikasi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    KonutArsa, yalnızca analiz (analytics) veya reklam (AdSense) özellikleri etkinleştirildiğinde ve
+    tercihinize bağlı olarak çerez veya benzeri teknolojiler kullanır. Bu özellikler kapalıyken
+    gereksiz bir çerez bildirimi göstermeyiz.
+  </p>
+
+  <h2>Çerez kategorilerimiz</h2>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">Kategori</th>
+        <th scope="col">Amaç</th>
+        <th scope="col">Varsayılan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Zorunlu</td>
+        <td>Sitenin temel çalışması ve tercihlerinizin (örneğin çerez onayınızın) hatırlanması</td>
+        <td>Açık</td>
+      </tr>
+      <tr>
+        <td>Analitik</td>
+        <td>Site kullanımına dair anonim/toplu istatistikler (yalnızca GA4 etkinse)</td>
+        <td>Kapalı</td>
+      </tr>
+      <tr>
+        <td>Reklam</td>
+        <td>Reklam gösterimi ve ölçümlemesi (yalnızca AdSense etkinse)</td>
+        <td>Kapalı</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Tercihlerinizi nasıl değiştirebilirsiniz?</h2>
+  <p>
+    Analiz veya reklam özellikleri etkinleştirildiğinde, sayfanın altında bir çerez tercihi
+    bildirimi görürsünüz. Bu bildirimde "Yalnızca zorunlu" veya "Kabul et" seçeneklerini kullanarak
+    tercihinizi belirleyebilirsiniz. Tarayıcınızın ayarlarından da çerezleri her zaman silebilir
+    veya engelleyebilirsiniz.
+  </p>
+
+  <h2>Önemli not</h2>
+  <p>
+    Bu sayfada açıklanan mekanizma, kendi başına sertifikalı bir Onay Yönetim Platformu (CMP)
+    değildir. AdSense veya benzeri hizmetler Avrupa Ekonomik Alanı'ndaki kullanıcılar için
+    etkinleştirilecekse, Google'ın güncel Consent Mode ve CMP gereksinimlerinin ayrıca karşılanması
+    gerekir.
+  </p>
+</StaticPageLayout>

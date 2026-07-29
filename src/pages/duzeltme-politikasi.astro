@@ -1,0 +1,41 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Düzeltme Politikası"
+  description="KonutArsa içeriklerinde tespit edilen hataların nasıl bildirileceği ve düzeltileceğine dair politikamız."
+  path="/duzeltme-politikasi/"
+  breadcrumbItems={[{ label: 'Düzeltme Politikası', path: '/duzeltme-politikasi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    İçerik hazırlarken azami özeni gösteririz; ancak mevzuat değişebilir, kaynaklar güncellenebilir
+    ve insani hatalar oluşabilir. Bir hata fark ettiğinizde bunu bize bildirmenizi rica ederiz.
+  </p>
+
+  <h2>Hata nasıl bildirilir?</h2>
+  <p>
+    <a href="/iletisim/">İletişim</a> sayfamızdaki e-posta adresi üzerinden; hangi içerikte, hangi bilginin
+    yanlış veya güncelliğini yitirmiş olduğunu ve mümkünse güncel/doğru kaynağı belirterek bize ulaşabilirsiniz.
+  </p>
+
+  <h2>Düzeltme süreci</h2>
+  <ol>
+    <li>Bildirim değerlendirilir ve ilgili kaynaklar yeniden kontrol edilir.</li>
+    <li>Değişiklik gerekiyorsa içerik güncellenir.</li>
+    <li>
+      Önemli düzeltmeler, ilgili içeriğin "Düzeltme geçmişi" bölümünde tarih ve açıklamayla birlikte
+      şeffaf şekilde listelenir.
+    </li>
+    <li>İçeriğin "güncelleme tarihi" bilgisi buna göre yenilenir.</li>
+  </ol>
+
+  <h2>Hangi düzeltmeler "düzeltme geçmişine" eklenir?</h2>
+  <p>
+    Yazım/noktalama gibi küçük düzenlemeler ayrıca listelenmez. Ancak bir rakamın, oranın, kaynağın
+    veya önemli bir bilginin değişmesi gibi içeriğin anlamını etkileyen düzeltmeler, düzeltme
+    geçmişinde belirtilir.
+  </p>
+</StaticPageLayout>

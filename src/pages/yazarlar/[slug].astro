@@ -1,0 +1,131 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/common/Container.astro';
+import Breadcrumbs from '../../components/common/Breadcrumbs.astro';
+import JsonLd from '../../components/seo/JsonLd.astro';
+import ArticleCard from '../../components/cards/ArticleCard.astro';
+import EmptyState from '../../components/common/EmptyState.astro';
+import { getAllPublishedSummaries, toAuthorSummary } from '../../lib/content';
+import { buildPersonSchema } from '../../lib/schema';
+import { getAuthorPath } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const authorEntries = await getCollection('authors');
+  return authorEntries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const author = toAuthorSummary(entry);
+const path = getAuthorPath(author.slug);
+
+const allSummaries = await getAllPublishedSummaries();
+const authoredContent = allSummaries.filter(
+  (s) => s.authorSlug === author.slug || s.reviewerSlug === author.slug
+);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  ...buildPersonSchema({
+    name: author.name,
+    slug: author.slug,
+    role: author.role,
+    bio: author.bio,
+    avatar: author.avatar,
+  }),
+};
+---
+
+<BaseLayout
+  title={author.name}
+  descriptionOverride={author.bio || `${author.name} — KonutArsa yazar profili.`}
+  path={path}
+  jsonLd={personSchema}
+>
+  <Container class="author-page">
+    <Breadcrumbs
+      items={[
+        { label: 'Yazarlar', path: '/yazarlar/' },
+        { label: author.name, path },
+      ]}
+    />
+    <JsonLd data={personSchema} />
+
+    <header class="author-header">
+      {
+        author.avatar ? (
+          <img src={author.avatar} alt="" width="96" height="96" class="author-avatar" />
+        ) : (
+          <div class="author-avatar-placeholder" aria-hidden="true">
+            {author.name.charAt(0).toLocaleUpperCase('tr-TR')}
+          </div>
+        )
+      }
+      <div>
+        <h1>{author.name}</h1>
+        {author.role && <p class="author-role">{author.role}</p>}
+      </div>
+    </header>
+
+    {author.bio && <p class="author-bio">{author.bio}</p>}
+
+    <section aria-labelledby="author-content-heading">
+      <h2 id="author-content-heading">Yayımlanan içerikler</h2>
+      {
+        authoredContent.length > 0 ? (
+          <div class="author-article-grid">
+            {authoredContent.map((item) => (
+              <ArticleCard item={item} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState message="Bu yazara ait içerikler listelemesi hazırlanıyor." />
+        )
+      }
+    </section>
+  </Container>
+</BaseLayout>
+
+<style>
+  .author-page {
+    padding-block: var(--space-6) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .author-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .author-avatar,
+  .author-avatar-placeholder {
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .author-avatar-placeholder {
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-brand-700);
+    color: var(--color-text-inverse);
+    font-weight: 700;
+    font-size: var(--text-2xl);
+  }
+  .author-role {
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+  }
+  .author-bio {
+    max-width: 65ch;
+    color: var(--color-text-muted);
+  }
+  .author-article-grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    margin-top: var(--space-4);
+  }
+</style>

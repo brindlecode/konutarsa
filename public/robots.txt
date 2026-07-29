@@ -1,0 +1,17 @@
+# KonutArsa robots.txt
+# Otomatik üretilir: scripts/generate-robots.mjs — elle düzenlemeyin.
+
+User-agent: *
+Allow: /
+
+# OAI-SearchBot: arama sonuçlarında görünmek için kullanılan bot, genel
+# arama botlarıyla aynı tercihi paylaşır (ALLOW_SEARCH_CRAWLERS).
+User-agent: OAI-SearchBot
+Allow: /
+
+# GPTBot: yapay zekâ modeli eğitimi için içerik toplayan bot, arama
+# botlarından bağımsız olarak yönetilir (ALLOW_TRAINING_CRAWLERS).
+User-agent: GPTBot
+Disallow: /
+
+Sitemap: https://konutarsa.com/sitemap-index.xml

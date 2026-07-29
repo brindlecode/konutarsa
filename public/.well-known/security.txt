@@ -1,0 +1,8 @@
+# KonutArsa güvenlik iletişim bilgisi (RFC 9116)
+# Bu site statik bir içerik platformudur; kullanıcı verisi veya kimlik
+# doğrulama sistemi barındırmaz. Yine de bir güvenlik açığı bulduysanız
+# lütfen aşağıdaki kanaldan bize ulaşın.
+
+Contact: https://konutarsa.com/iletisim/
+Preferred-Languages: tr, en
+Canonical: https://konutarsa.com/.well-known/security.txt

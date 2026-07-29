@@ -1,0 +1,54 @@
+{
+  "header": [
+    { "label": "Konut Rehberi", "href": "/konut-rehberi/" },
+    { "label": "Arsa Rehberi", "href": "/arsa-rehberi/" },
+    { "label": "Bölge Analizleri", "href": "/bolge-analizleri/" },
+    { "label": "Piyasa Raporları", "href": "/piyasa-raporlari/" },
+    { "label": "Mevzuat", "href": "/mevzuat/" },
+    { "label": "Sözlük", "href": "/sozluk/" },
+    { "label": "Güncel", "href": "/guncel/" }
+  ],
+  "footerColumns": [
+    {
+      "title": "İçerikler",
+      "links": [
+        { "label": "Konut Rehberi", "href": "/konut-rehberi/" },
+        { "label": "Arsa Rehberi", "href": "/arsa-rehberi/" },
+        { "label": "Bölge Analizleri", "href": "/bolge-analizleri/" },
+        { "label": "Piyasa Raporları", "href": "/piyasa-raporlari/" },
+        { "label": "Mevzuat", "href": "/mevzuat/" },
+        { "label": "Gayrimenkul Sözlüğü", "href": "/sozluk/" },
+        { "label": "Güncel", "href": "/guncel/" }
+      ]
+    },
+    {
+      "title": "Araçlar",
+      "links": [
+        { "label": "Konum Bulucu", "href": "/bolgeler/konum-bul/" },
+        { "label": "Site İçi Arama", "href": "/arama/" }
+      ]
+    },
+    {
+      "title": "Kurumsal",
+      "links": [
+        { "label": "Hakkımızda", "href": "/hakkimizda/" },
+        { "label": "Yazarlar", "href": "/yazarlar/" },
+        { "label": "İletişim", "href": "/iletisim/" },
+        { "label": "Editörlük Politikası", "href": "/editorluk-politikasi/" },
+        { "label": "Kaynak Politikası", "href": "/kaynak-politikasi/" },
+        { "label": "Düzeltme Politikası", "href": "/duzeltme-politikasi/" },
+        { "label": "Reklam Politikası", "href": "/reklam-politikasi/" },
+        { "label": "Yapay Zekâ Kullanım Politikası", "href": "/yapay-zeka-politikasi/" }
+      ]
+    },
+    {
+      "title": "Yasal",
+      "links": [
+        { "label": "Gizlilik Politikası", "href": "/gizlilik-politikasi/" },
+        { "label": "Çerez Politikası", "href": "/cerez-politikasi/" },
+        { "label": "Kullanım Koşulları", "href": "/kullanim-kosullari/" },
+        { "label": "Sorumluluk Reddi", "href": "/sorumluluk-reddi/" }
+      ]
+    }
+  ]
+}

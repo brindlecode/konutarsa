@@ -1,0 +1,53 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Sorumluluk Reddi"
+  description="KonutArsa içeriklerinin kapsamı ve sınırları hakkında sorumluluk reddi beyanı."
+  path="/sorumluluk-reddi/"
+  breadcrumbItems={[{ label: 'Sorumluluk Reddi', path: '/sorumluluk-reddi/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    KonutArsa'daki içerikler genel bilgilendirme amaçlıdır. Aşağıdaki noktaları lütfen dikkate alın:
+  </p>
+
+  <ul>
+    <li>
+      <strong>Yatırım danışmanlığı değildir.</strong> İçeriklerimiz, herhangi bir gayrimenkulün alım/satım
+      kararınız için yatırım tavsiyesi niteliği taşımaz.
+    </li>
+    <li>
+      <strong>Hukuki danışmanlık değildir.</strong> Somut hukuki sorularınız için bir avukata veya ilgili
+      uzmana danışmanız önerilir.
+    </li>
+    <li>
+      <strong>Gayrimenkul değerleme raporu değildir.</strong> Bir taşınmazın güncel piyasa değeri için
+      yetkilendirilmiş bir değerleme uzmanına başvurulmalıdır.
+    </li>
+    <li>
+      <strong>Mühendislik veya deprem dayanıklılık raporu değildir.</strong> Bir binanın yapısal güvenliği
+      için yetkili bir mühendislik firmasından rapor alınmalıdır.
+    </li>
+    <li>
+      <strong>Resmî kurum teyidinin yerine geçmez.</strong> Tapu, imar ve belediye kayıtlarının, herhangi
+      bir işlem öncesinde ilgili resmî kurumlardan (tapu müdürlüğü, belediye, TKGM vb.) doğrulanması gerekir.
+    </li>
+  </ul>
+
+  <h2>Kaynaklar hakkında</h2>
+  <p>
+    İçeriklerimizde kullandığımız kaynakların yayın tarihindeki güncel ve doğru olmasına özen
+    gösteririz; ancak mevzuat ve resmî veriler zamanla değişebilir. Güncel ve kesin bilgi için
+    ilgili resmî kaynağa başvurmanızı öneririz.
+  </p>
+
+  <h2>Sorumluluk sınırı</h2>
+  <p>
+    KonutArsa, sitedeki bilgilere dayanılarak alınan kararlardan doğabilecek doğrudan veya dolaylı
+    zararlardan sorumlu tutulamaz. Gayrimenkul alım satımı gibi önemli mali kararlarda, ilgili
+    uzmanlardan (avukat, mali müşavir, değerleme uzmanı vb.) profesyonel destek almanızı öneririz.
+  </p>
+</StaticPageLayout>

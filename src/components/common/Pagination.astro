@@ -1,0 +1,51 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath: string;
+}
+const { currentPage, totalPages, basePath } = Astro.props;
+
+function pageHref(page: number): string {
+  return page === 1 ? `${basePath}/` : `${basePath}/sayfa/${page}/`;
+}
+---
+
+{
+  totalPages > 1 && (
+    <nav class="pagination" aria-label="Sayfalama">
+      {currentPage > 1 ? (
+        <a href={pageHref(currentPage - 1)} rel="prev" class="button button-secondary">
+          ← Önceki
+        </a>
+      ) : (
+        <span />
+      )}
+      <span class="pagination-status" aria-current="page">
+        Sayfa {currentPage} / {totalPages}
+      </span>
+      {currentPage < totalPages ? (
+        <a href={pageHref(currentPage + 1)} rel="next" class="button button-secondary">
+          Sonraki →
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-7);
+  }
+  .pagination-status {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-weight: 600;
+  }
+</style>

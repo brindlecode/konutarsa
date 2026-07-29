@@ -1,0 +1,85 @@
+---
+import ResponsiveImage from '../common/ResponsiveImage.astro';
+import { COLLECTION_LABELS_TR, type ContentSummary } from '../../lib/content';
+import { formatDateLong } from '../../lib/dates';
+
+interface Props {
+  item: ContentSummary;
+  headingLevel?: 'h2' | 'h3' | 'h4';
+}
+
+const { item, headingLevel: Heading = 'h3' } = Astro.props;
+---
+
+<article class="article-card card">
+  <a href={item.url} class="article-card-link">
+    {
+      item.coverImage && (
+        <ResponsiveImage
+          src={item.coverImage}
+          alt={item.coverAlt ?? ''}
+          sizes="(min-width: 64rem) 320px, 45vw"
+          class="article-card-image"
+        />
+      )
+    }
+    <div class="article-card-body">
+      <span class="badge badge-neutral">{COLLECTION_LABELS_TR[item.collection]}</span>
+      <Heading class="article-card-title">{item.title}</Heading>
+      <p class="article-card-excerpt">{item.excerpt}</p>
+      <time datetime={item.publishedAt.toISOString()} class="article-card-date">
+        {formatDateLong(item.publishedAt)}
+      </time>
+    </div>
+  </a>
+</article>
+
+<style>
+  .article-card {
+    overflow: hidden;
+    height: 100%;
+  }
+  .article-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: var(--color-text);
+  }
+  .article-card-link:hover {
+    color: var(--color-text);
+  }
+  .article-card-link:hover .article-card-title {
+    color: var(--color-brand-700);
+  }
+  .article-card :global(.article-card-image) {
+    margin: 0;
+  }
+  .article-card :global(.article-card-image img) {
+    border-radius: 0;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .article-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    flex: 1;
+  }
+  .article-card-title {
+    font-size: var(--text-md);
+    transition: color var(--transition-fast);
+  }
+  .article-card-excerpt {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    max-width: none;
+  }
+  .article-card-date {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+</style>

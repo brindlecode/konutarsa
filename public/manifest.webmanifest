@@ -1,0 +1,14 @@
+{
+  "name": "KonutArsa — Konut ve Arsa Rehberi",
+  "short_name": "KonutArsa",
+  "description": "Konut ve arsa almadan önce araştırma yapılmasını sağlayan bağımsız içerik platformu.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbfaf6",
+  "theme_color": "#0a1d30",
+  "lang": "tr",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

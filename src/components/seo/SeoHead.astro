@@ -1,0 +1,20 @@
+---
+/**
+ * Yalnızca <title>, meta description, canonical ve robots direktiflerini
+ * render eder. Open Graph/Twitter için SocialMeta.astro, yapılandırılmış
+ * veri için JsonLd.astro kullanılır (BaseLayout.astro üçünü birlikte çağırır).
+ */
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  robotsContent: string;
+}
+
+const { title, description, canonical, robotsContent } = Astro.props;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robotsContent} />

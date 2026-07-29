@@ -1,0 +1,494 @@
+# Pages CMS yapılandırması (https://pagescms.org)
+#
+# Bu dosya, Gamze'nin (teknik olmayan içerik editörü) KonutArsa içeriğini
+# yönetebileceği sade bir panel tanımlar. Aşağıdaki teknik alanlar bilinçli
+# olarak bu dosyaya HİÇ eklenmemiştir ve Gamze'ye hiçbir zaman gösterilmez:
+# JSON-LD, canonical hesaplama, sitemap/robots ayarları, build ayarları,
+# git ayarları, analytics/AdSense script'leri, konum (locations) JSON
+# dosyaları, sistem slug hesaplamaları, güvenlik başlıkları.
+#
+# Alan sırası, EDITOR_GUIDE_TR.md ve proje gereksinimleri madde 10.4 ile
+# birebir eşleşecek şekilde düzenlenmiştir.
+
+media:
+  input: public/uploads/images
+  output: /uploads/images
+  extensions: [jpg, jpeg, png, webp]
+
+content:
+  # --- İçerikler ---
+  - name: konut-rehberi
+    label: Konut Rehberi
+    type: collection
+    path: src/content/konut-rehberi
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields: [title, status, publishedAt]
+      primary: title
+      sort: [publishedAt, title]
+      default:
+        sort: publishedAt
+        order: desc
+    fields: &common-guide-fields
+      - name: status
+        label: Yayın durumu
+        type: select
+        options:
+          values: [draft, published]
+        default: draft
+        required: true
+      - name: title
+        label: Başlık
+        type: string
+        required: true
+        description: '15-100 karakter arası, benzersiz bir başlık.'
+      - name: slug
+        label: URL kısa adı
+        type: string
+        description: 'Boş bırakılırsa dosya adından otomatik oluşturulur. Küçük harf, rakam ve tire kullanın.'
+      - name: excerpt
+        label: Kısa özet
+        type: text
+        description: '100-240 karakter. Liste kartlarında ve arama sonuçlarında gösterilir.'
+      - name: quickAnswer
+        label: Doğrudan cevap
+        type: text
+        description: 'Sorunun cevabını ilk paragrafta doğrudan verin (40-120 kelime önerilir).'
+      - name: keyTakeaways
+        label: Önemli noktalar
+        type: string
+        list: true
+        description: 'En az 3, en fazla 7 kısa ve somut madde.'
+      - name: coverImage
+        label: Kapak görseli
+        type: image
+        description: 'En az 1200 piksel genişlik önerilir.'
+      - name: coverAlt
+        label: Kapak görseli açıklaması (alt metin)
+        type: string
+      - name: coverCaption
+        label: Kapak görseli alt yazısı
+        type: string
+      - name: body
+        label: İçerik gövdesi
+        type: rich-text
+      - name: sources
+        label: Kaynaklar
+        type: object
+        list: true
+        fields:
+          - { name: key, label: 'Kaynak anahtarı (örn. tkgm-parsel)', type: string, required: true }
+          - { name: organization, label: Kurum / organizasyon, type: string, required: true }
+          - { name: title, label: Kaynak başlığı, type: string, required: true }
+          - { name: url, label: Bağlantı, type: string, required: true }
+          - { name: publishedAt, label: Yayın tarihi, type: date }
+          - { name: accessedAt, label: Erişim tarihi, type: date }
+          - { name: official, label: 'Resmî kaynak mı?', type: boolean, default: false }
+          - { name: note, label: Not, type: string }
+      - name: faq
+        label: Sık sorulan sorular
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Soru, type: string, required: true }
+          - { name: answer, label: Cevap, type: text, required: true }
+      - name: author
+        label: Yazar
+        type: reference
+        options:
+          collection: authors
+        required: true
+      - name: reviewedBy
+        label: Gözden geçiren editör
+        type: reference
+        options:
+          collection: authors
+      - name: publishedAt
+        label: Yayın tarihi
+        type: date
+        required: true
+      - name: updatedAt
+        label: Güncelleme tarihi
+        type: date
+      - name: methodology
+        label: Metodoloji
+        type: text
+      - name: corrections
+        label: Düzeltme geçmişi
+        type: object
+        list: true
+        fields:
+          - { name: date, label: Tarih, type: date, required: true }
+          - { name: description, label: Açıklama, type: string, required: true }
+      - name: tags
+        label: Etiketler
+        type: string
+        list: true
+        description: 'En fazla 8 etiket.'
+      - name: social
+        label: Sosyal medya metinleri
+        type: object
+        fields:
+          - { name: shortCaption, label: Kısa paylaşım metni, type: text }
+          - { name: longCaption, label: Uzun paylaşım metni, type: text }
+          - { name: hashtags, label: Hashtag'ler, type: string, list: true }
+      - name: sponsorship
+        label: Sponsor bilgileri
+        type: object
+        fields:
+          - { name: sponsored, label: 'Sponsorlu içerik mi?', type: boolean, default: false }
+          - { name: sponsorName, label: Sponsor adı, type: string }
+          - { name: disclosure, label: Açıklama metni, type: text }
+      - name: seo
+        label: Gelişmiş SEO (genellikle boş bırakın)
+        type: object
+        fields:
+          - { name: titleOverride, label: Başlık geçersiz kılma, type: string }
+          - { name: descriptionOverride, label: Açıklama geçersiz kılma, type: text }
+          - { name: canonicalOverride, label: Canonical geçersiz kılma, type: string }
+          - { name: noindex, label: Arama motorlarından gizle, type: boolean, default: false }
+          - { name: nofollow, label: Bağlantıları takip etme, type: boolean, default: false }
+          - { name: ogImageOverride, label: Paylaşım görseli geçersiz kılma, type: image }
+
+  - name: arsa-rehberi
+    label: Arsa Rehberi
+    type: collection
+    path: src/content/arsa-rehberi
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields: [title, status, publishedAt]
+      primary: title
+      sort: [publishedAt, title]
+      default: { sort: publishedAt, order: desc }
+    fields: *common-guide-fields
+
+  - name: bolge-analizleri
+    label: Bölge Analizleri
+    type: collection
+    path: src/content/bolge-analizleri
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields: [title, status, publishedAt]
+      primary: title
+      sort: [publishedAt, title]
+      default: { sort: publishedAt, order: desc }
+    fields:
+      - name: status
+        label: Yayın durumu
+        type: select
+        options: { values: [draft, published] }
+        default: draft
+        required: true
+      - name: title
+        label: Başlık
+        type: string
+        required: true
+      - name: slug
+        label: URL kısa adı
+        type: string
+      - name: excerpt
+        label: Kısa özet
+        type: text
+      - name: quickAnswer
+        label: Doğrudan cevap
+        type: text
+      - name: keyTakeaways
+        label: Önemli noktalar
+        type: string
+        list: true
+      - name: coverImage
+        label: Kapak görseli
+        type: image
+      - name: coverAlt
+        label: Kapak görseli açıklaması (alt metin)
+        type: string
+      - name: coverCaption
+        label: Kapak görseli alt yazısı
+        type: string
+      - name: locationRef
+        label: Konum referansı
+        type: string
+        required: true
+        description: '/bolgeler/konum-bul/ aracıyla bulun ve kopyalayın (örn. district:canakkale/merkez).'
+      - name: locationScope
+        label: Konum kapsamı
+        type: select
+        options: { values: [province, district, neighborhood, custom-area] }
+        required: true
+      - name: customLocationLabel
+        label: Özel bölge adı
+        type: string
+        description: 'Yalnızca konum kapsamı "custom-area" ise doldurun.'
+      - name: propertyFocus
+        label: Gayrimenkul odağı
+        type: select
+        options: { values: [housing, land, mixed] }
+        required: true
+      - name: riskLevel
+        label: Risk değerlendirmesi
+        type: select
+        options:
+          { values: ['Düşük', 'Düşük-Orta', 'Orta', 'Orta-Yüksek', 'Yüksek', 'Veri yetersiz'] }
+      - name: investmentHorizon
+        label: Yatırım vadesi
+        type: select
+        options: { values: ['Kısa vadeli', 'Orta vadeli', 'Uzun vadeli', 'Veri yetersiz'] }
+      - name: body
+        label: İçerik gövdesi
+        type: rich-text
+      - name: sources
+        label: Kaynaklar
+        type: object
+        list: true
+        fields:
+          - { name: key, label: 'Kaynak anahtarı', type: string, required: true }
+          - { name: organization, label: Kurum / organizasyon, type: string, required: true }
+          - { name: title, label: Kaynak başlığı, type: string, required: true }
+          - { name: url, label: Bağlantı, type: string, required: true }
+          - { name: publishedAt, label: Yayın tarihi, type: date }
+          - { name: accessedAt, label: Erişim tarihi, type: date }
+          - { name: official, label: 'Resmî kaynak mı?', type: boolean, default: false }
+          - { name: note, label: Not, type: string }
+      - name: faq
+        label: Sık sorulan sorular
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Soru, type: string, required: true }
+          - { name: answer, label: Cevap, type: text, required: true }
+      - name: author
+        label: Yazar
+        type: reference
+        options: { collection: authors }
+        required: true
+      - name: reviewedBy
+        label: Gözden geçiren editör
+        type: reference
+        options: { collection: authors }
+      - name: publishedAt
+        label: Yayın tarihi
+        type: date
+        required: true
+      - name: updatedAt
+        label: Güncelleme tarihi
+        type: date
+      - name: methodology
+        label: Metodoloji
+        type: text
+        required: true
+      - name: corrections
+        label: Düzeltme geçmişi
+        type: object
+        list: true
+        fields:
+          - { name: date, label: Tarih, type: date, required: true }
+          - { name: description, label: Açıklama, type: string, required: true }
+      - name: tags
+        label: Etiketler
+        type: string
+        list: true
+      - name: social
+        label: Sosyal medya metinleri
+        type: object
+        fields:
+          - { name: shortCaption, label: Kısa paylaşım metni, type: text }
+          - { name: longCaption, label: Uzun paylaşım metni, type: text }
+          - { name: hashtags, label: Hashtag'ler, type: string, list: true }
+      - name: sponsorship
+        label: Sponsor bilgileri
+        type: object
+        fields:
+          - { name: sponsored, label: 'Sponsorlu içerik mi?', type: boolean, default: false }
+          - { name: sponsorName, label: Sponsor adı, type: string }
+          - { name: disclosure, label: Açıklama metni, type: text }
+      - name: seo
+        label: Gelişmiş SEO (genellikle boş bırakın)
+        type: object
+        fields:
+          - { name: titleOverride, label: Başlık geçersiz kılma, type: string }
+          - { name: descriptionOverride, label: Açıklama geçersiz kılma, type: text }
+          - { name: canonicalOverride, label: Canonical geçersiz kılma, type: string }
+          - { name: noindex, label: Arama motorlarından gizle, type: boolean, default: false }
+          - { name: nofollow, label: Bağlantıları takip etme, type: boolean, default: false }
+          - { name: ogImageOverride, label: Paylaşım görseli geçersiz kılma, type: image }
+
+  - name: mevzuat
+    label: Mevzuat
+    type: collection
+    path: src/content/mevzuat
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields: [title, status, publishedAt]
+      primary: title
+      sort: [publishedAt, title]
+      default: { sort: publishedAt, order: desc }
+    fields: *common-guide-fields
+
+  - name: piyasa-raporlari
+    label: Piyasa Raporları
+    type: collection
+    path: src/content/piyasa-raporlari
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields: [title, status, publishedAt]
+      primary: title
+      sort: [publishedAt, title]
+      default: { sort: publishedAt, order: desc }
+    fields: *common-guide-fields
+
+  - name: guncel
+    label: Güncel
+    type: collection
+    path: src/content/guncel
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields: [title, status, publishedAt]
+      primary: title
+      sort: [publishedAt, title]
+      default: { sort: publishedAt, order: desc }
+    fields: *common-guide-fields
+
+  - name: sozluk
+    label: Gayrimenkul Sözlüğü
+    type: collection
+    path: src/content/sozluk
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields: [title, status, publishedAt]
+      primary: title
+      sort: [title]
+      default: { sort: title, order: asc }
+    fields:
+      - name: status
+        label: Yayın durumu
+        type: select
+        options: { values: [draft, published] }
+        default: draft
+        required: true
+      - name: title
+        label: Başlık (terim)
+        type: string
+        required: true
+      - name: slug
+        label: URL kısa adı
+        type: string
+      - name: excerpt
+        label: Kısa özet
+        type: text
+      - name: definition
+        label: Açık tanım
+        type: text
+        required: true
+      - name: usageExample
+        label: Kullanım örneği
+        type: text
+      - name: whyItMatters
+        label: Neden önemli olduğu
+        type: text
+      - name: relatedRisk
+        label: İlgili risk
+        type: text
+      - name: relatedGuides
+        label: İlgili rehberler (URL kısa adları)
+        type: string
+        list: true
+      - name: coverImage
+        label: Kapak görseli
+        type: image
+      - name: coverAlt
+        label: Kapak görseli açıklaması (alt metin)
+        type: string
+      - name: body
+        label: Ek içerik (isteğe bağlı)
+        type: rich-text
+      - name: sources
+        label: Kaynaklar
+        type: object
+        list: true
+        fields:
+          - { name: key, label: 'Kaynak anahtarı', type: string, required: true }
+          - { name: organization, label: Kurum / organizasyon, type: string, required: true }
+          - { name: title, label: Kaynak başlığı, type: string, required: true }
+          - { name: url, label: Bağlantı, type: string, required: true }
+          - { name: official, label: 'Resmî kaynak mı?', type: boolean, default: false }
+      - name: author
+        label: Yazar
+        type: reference
+        options: { collection: authors }
+        required: true
+      - name: publishedAt
+        label: Yayın tarihi
+        type: date
+        required: true
+      - name: updatedAt
+        label: Güncelleme tarihi
+        type: date
+      - name: tags
+        label: Etiketler
+        type: string
+        list: true
+
+  # --- Yönetim ---
+  - name: authors
+    label: Yazarlar
+    type: collection
+    path: src/content/authors
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    delete: false
+    rename: false
+    view:
+      fields: [name, role]
+      primary: name
+    fields:
+      - { name: name, label: Ad Soyad, type: string, required: true }
+      - { name: role, label: Unvan, type: string, description: 'Yalnızca gerçek bilgi girin.' }
+      - { name: bio, label: Biyografi, type: text }
+      - { name: avatar, label: Profil fotoğrafı, type: image }
+      - { name: email, label: E-posta, type: string }
+      - { name: credentials, label: Sertifikalar / unvanlar, type: string, list: true }
+      - name: social
+        label: Sosyal medya
+        type: object
+        fields:
+          - { name: website, label: Web sitesi, type: string }
+          - { name: linkedin, label: LinkedIn, type: string }
+          - { name: x, label: X (Twitter), type: string }
+
+  - name: ads
+    label: Reklamlar
+    type: file
+    path: src/data/ads.json
+    format: code
+    options:
+      language: json
+    delete: false
+
+  - name: site-settings
+    label: Site Ayarları
+    type: file
+    path: src/data/site-content.json
+    format: code
+    options:
+      language: json
+    delete: false
+
+  - name: social-media
+    label: Sosyal Medya
+    type: file
+    path: src/data/social.json
+    format: code
+    options:
+      language: json
+    delete: false
+
+settings:
+  content:
+    merge: true

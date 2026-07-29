@@ -1,0 +1,15 @@
+---
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.collection === 'sozluk');
+---
+
+<CategoryLayout
+  title="Gayrimenkul Sözlüğü"
+  description="TAKS, KAKS, şufa hakkı, ifraz, tevhit gibi gayrimenkul ve tapu işlemlerinde sık geçen terimlerin açık tanımları."
+  path="/sozluk/"
+  items={items}
+  breadcrumbItems={[{ label: 'Gayrimenkul Sözlüğü', path: '/sozluk/' }]}
+/>

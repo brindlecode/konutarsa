@@ -1,0 +1,54 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Kullanım Koşulları"
+  description="KonutArsa web sitesini kullanırken geçerli olan kullanım koşulları."
+  path="/kullanim-kosullari/"
+  breadcrumbItems={[{ label: 'Kullanım Koşulları', path: '/kullanim-kosullari/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    <code>konutarsa.com</code> adresini ("Site") kullanarak aşağıdaki koşulları kabul etmiş sayılırsınız.
+  </p>
+
+  <h2>Sitenin amacı</h2>
+  <p>
+    KonutArsa, konut ve arsa almadan önce araştırma yapılmasına yardımcı olan bağımsız bir içerik
+    platformudur. Site; ilan yayınlamaz, emlak danışmanlığı veya aracılık hizmeti sunmaz.
+  </p>
+
+  <h2>İçeriğin niteliği</h2>
+  <p>
+    Sitedeki içerikler genel bilgilendirme amaçlıdır ve <a href="/sorumluluk-reddi/"
+      >Sorumluluk Reddi</a
+    >
+    sayfamızda belirtildiği üzere yatırım danışmanlığı, hukuki danışmanlık veya resmî bir değerleme raporu
+    yerine geçmez.
+  </p>
+
+  <h2>Fikri mülkiyet</h2>
+  <p>
+    Sitede yayımlanan özgün metin, görsel ve tasarım unsurları KonutArsa'ya aittir. İçeriklerin
+    ticari amaçla izinsiz çoğaltılması veya dağıtılması yasaktır. Kaynak olarak gösterilen resmî
+    kurum verileri, ilgili kurumların kendi mevzuatına tabidir.
+  </p>
+
+  <h2>Bağlantı verme</h2>
+  <p>
+    Sitemize bağlantı vermek serbesttir. Ancak içeriklerimizin, kaynağı belirtilmeden veya yanıltıcı
+    bir bağlamda başka bir sitede yeniden yayımlanmasına izin verilmez.
+  </p>
+
+  <h2>Sorumluluk sınırlaması</h2>
+  <p>
+    KonutArsa, sitedeki bilgilerin doğruluğu için makul özeni gösterir ancak bilgilerin her zaman
+    güncel, eksiksiz veya hatasız olacağını garanti etmez. Sitenin kullanımından doğabilecek
+    doğrudan veya dolaylı zararlardan KonutArsa sorumlu tutulamaz.
+  </p>
+
+  <h2>Değişiklikler</h2>
+  <p>Bu koşullar zaman zaman güncellenebilir. Güncel sürüm her zaman bu sayfada yayımlanır.</p>
+</StaticPageLayout>

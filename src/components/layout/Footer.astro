@@ -1,0 +1,160 @@
+---
+import navigationData from '../../data/navigation.json';
+import socialData from '../../data/social.json';
+import siteData from '../../data/site-content.json';
+
+const { footerColumns } = navigationData;
+const socialLinks = Object.entries(socialData).filter(([, url]) => Boolean(url));
+const year = new Date().getFullYear();
+
+const SOCIAL_LABELS: Record<string, string> = {
+  instagram: 'Instagram',
+  facebook: 'Facebook',
+  x: 'X (Twitter)',
+  linkedin: 'LinkedIn',
+  youtube: 'YouTube',
+};
+---
+
+<footer class="site-footer" data-site-footer>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <span class="footer-brand-name">KonutArsa</span>
+      <p class="footer-tagline">{siteData.tagline}</p>
+      <p class="footer-description">{siteData.description}</p>
+      {
+        socialLinks.length > 0 && (
+          <ul class="footer-social">
+            {socialLinks.map(([key, url]) => (
+              <li>
+                <a href={url as string} rel="me noopener noreferrer" target="_blank">
+                  {SOCIAL_LABELS[key] ?? key}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+
+    {
+      footerColumns.map((column) => (
+        <nav class="footer-column" aria-label={column.title}>
+          <h2>{column.title}</h2>
+          <ul>
+            {column.links.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+  </div>
+
+  <div class="container footer-bottom">
+    <p>&copy; {year} KonutArsa. Tüm hakları saklıdır.</p>
+    <p class="footer-disclaimer">
+      KonutArsa yatırım danışmanlığı, hukuki danışmanlık veya değerleme hizmeti sunmaz.
+      <a href="/sorumluluk-reddi/">Sorumluluk reddini okuyun</a>.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-brand-900);
+    color: var(--color-text-inverse-muted);
+    margin-top: var(--space-9);
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: 1fr;
+  }
+
+  .footer-brand-name {
+    font-weight: 800;
+    font-size: var(--text-lg);
+    color: var(--color-text-inverse);
+  }
+
+  .footer-tagline {
+    margin-top: var(--space-2);
+    font-weight: 600;
+    color: var(--color-text-inverse);
+  }
+
+  .footer-description {
+    margin-top: var(--space-3);
+    max-width: 32rem;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  .footer-social {
+    display: flex;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .footer-social a {
+    color: var(--color-text-inverse);
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+
+  .footer-column h2 {
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-inverse);
+    margin-bottom: var(--space-3);
+  }
+
+  .footer-column ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .footer-column a {
+    font-size: var(--text-sm);
+    color: var(--color-text-inverse-muted);
+  }
+
+  .footer-column a:hover {
+    color: var(--color-text-inverse);
+  }
+
+  .footer-bottom {
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    font-size: var(--text-xs);
+  }
+
+  .footer-disclaimer a {
+    color: var(--color-text-inverse);
+    text-decoration: underline;
+  }
+
+  @media (min-width: 40rem) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .footer-grid {
+      grid-template-columns: 1.4fr repeat(4, 1fr);
+    }
+  }
+</style>

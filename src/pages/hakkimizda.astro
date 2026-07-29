@@ -1,0 +1,71 @@
+---
+import StaticPageLayout from '../layouts/StaticPageLayout.astro';
+
+const updatedAt = new Date('2026-07-20');
+---
+
+<StaticPageLayout
+  title="Hakkımızda"
+  description="KonutArsa, konut ve arsa almadan önce araştırma yapılmasını sağlayan bağımsız bir içerik platformudur."
+  path="/hakkimizda/"
+  breadcrumbItems={[{ label: 'Hakkımızda', path: '/hakkimizda/' }]}
+  updatedAt={updatedAt}
+>
+  <p>
+    <strong>KonutArsa</strong>, konut veya arsa almadan önce araştırma yapılmasını sağlayan, resmî
+    kaynakları sadeleştiren, bölge analizleri, kontrol listeleri ve gayrimenkul rehberleri
+    yayımlayan bağımsız bir içerik platformudur.
+  </p>
+
+  <h2>Ne yapıyoruz?</h2>
+  <p>
+    KonutArsa bir ilan platformu değildir; emlak ilanı yayınlamaz, emlak ofisi veya danışmanlık
+    hizmeti sunmaz. Amacımız, konut veya arsa alım sürecinde bilinmesi gereken tapu, imar, mevzuat
+    ve bölge bilgilerini sade, anlaşılır ve kaynaklı bir şekilde okuyucularımızla paylaşmaktır.
+  </p>
+
+  <h2>Neden "İlan değil, analiz"?</h2>
+  <p>
+    Gayrimenkul kararları genellikle hayatın en büyük mali kararlarından biridir. Karar vermeden
+    önce doğru soruları sormanıza yardımcı olmayı; tapu türü, imar durumu, hisseli mülkiyet,
+    bölgesel riskler gibi konularda net bilgiye kolayca ulaşmanızı hedefliyoruz.
+  </p>
+
+  <h2>İçerik yaklaşımımız</h2>
+  <ul>
+    <li>
+      İçerikler yayımlanmadan önce editoryal incelemeden geçer (bkz. <a
+        href="/editorluk-politikasi/">Editörlük Politikası</a
+      >).
+    </li>
+    <li>
+      Önemli iddiaların yanına kaynak referansı eklenir (bkz. <a href="/kaynak-politikasi/"
+        >Kaynak Politikası</a
+      >).
+    </li>
+    <li>
+      Hatalar fark edildiğinde şeffaf şekilde düzeltilir (bkz. <a href="/duzeltme-politikasi/"
+        >Düzeltme Politikası</a
+      >).
+    </li>
+    <li>
+      İçerik hazırlığında yapay zekâ desteği kullanılabilir (bkz. <a href="/yapay-zeka-politikasi/"
+        >Yapay Zekâ Kullanım Politikası</a
+      >).
+    </li>
+  </ul>
+
+  <h2>Ekibimiz</h2>
+  <p>
+    İçeriklerimizi hazırlayan ve gözden geçiren yazar ve editörleri <a href="/yazarlar/">Yazarlar</a
+    > sayfasında bulabilirsiniz.
+  </p>
+
+  <h2>İletişim</h2>
+  <p>
+    Sorularınız, düzeltme talepleriniz veya iş birliği talepleriniz için <a href="/iletisim/"
+      >İletişim</a
+    >
+    sayfamızı ziyaret edebilirsiniz.
+  </p>
+</StaticPageLayout>

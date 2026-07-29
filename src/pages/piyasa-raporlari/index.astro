@@ -1,0 +1,15 @@
+---
+import CategoryLayout from '../../layouts/CategoryLayout.astro';
+import { getAllPublishedSummaries } from '../../lib/content';
+
+const allSummaries = await getAllPublishedSummaries();
+const items = allSummaries.filter((s) => s.collection === 'piyasa-raporlari');
+---
+
+<CategoryLayout
+  title="Piyasa Raporları"
+  description="TCMB ve TÜİK gibi resmî kaynaklardan konut piyasası verilerine nasıl ulaşacağınızı ve bu verileri nasıl yorumlayacağınızı anlatan içerikler."
+  path="/piyasa-raporlari/"
+  items={items}
+  breadcrumbItems={[{ label: 'Piyasa Raporları', path: '/piyasa-raporlari/' }]}
+/>

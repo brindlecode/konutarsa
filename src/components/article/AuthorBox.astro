@@ -1,0 +1,85 @@
+---
+interface Props {
+  name: string;
+  role?: string;
+  bio?: string;
+  avatar?: string;
+  href: string;
+  heading?: string;
+}
+
+const { name, role, bio, avatar, href, heading = 'Yazar hakkında' } = Astro.props;
+const initial = name.trim().charAt(0).toLocaleUpperCase('tr-TR');
+---
+
+<div class="author-box">
+  <p class="author-box-heading">{heading}</p>
+  <div class="author-box-content">
+    {
+      avatar ? (
+        <img src={avatar} alt="" width="64" height="64" loading="lazy" class="author-avatar" />
+      ) : (
+        <div class="author-avatar-placeholder" aria-hidden="true">
+          {initial}
+        </div>
+      )
+    }
+    <div class="author-info">
+      <a href={href} class="author-name">
+        {name}
+      </a>
+      {role && <p class="author-role">{role}</p>}
+      {bio && <p class="author-bio">{bio}</p>}
+    </div>
+  </div>
+</div>
+
+<style>
+  .author-box {
+    background-color: var(--color-surface-muted);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+  }
+  .author-box-heading {
+    font-size: var(--text-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-3);
+  }
+  .author-box-content {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+  }
+  .author-avatar,
+  .author-avatar-placeholder {
+    border-radius: 999px;
+    flex-shrink: 0;
+  }
+  .author-avatar-placeholder {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-brand-700);
+    color: var(--color-text-inverse);
+    font-weight: 700;
+    font-size: var(--text-lg);
+  }
+  .author-name {
+    font-weight: 700;
+    font-size: var(--text-md);
+  }
+  .author-role {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-top: var(--space-1);
+  }
+  .author-bio {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+</style>

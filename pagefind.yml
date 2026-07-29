@@ -1,0 +1,12 @@
+# Pagefind yapılandırması (bkz. SEO_OPERATIONS_TR.md).
+#
+# Ana içerik alanı, sayfalarda `data-pagefind-body` attribute'u ile işaretlenir
+# (src/layouts/ArticleLayout.astro ve benzer düzenlerde). Bu attribute mevcut
+# olduğunda Pagefind yalnızca işaretli alanı indeksler; header, footer, nav ve
+# sidebar otomatik olarak dışarıda kalır. İlgili içerik kartları, reklam
+# alanları ve paylaşım butonları gibi işaretli alan İÇİNDEKİ ama aramada
+# görünmesi istenmeyen bloklar `data-pagefind-ignore` ile hariç tutulur.
+#
+# Bu dosya yalnızca ek/istisnai dışlamalar için kullanılır.
+exclude_selectors:
+  - '[data-pagefind-ignore]'

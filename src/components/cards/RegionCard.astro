@@ -1,0 +1,36 @@
+---
+interface Props {
+  name: string;
+  href: string;
+  contentCount: number;
+}
+const { name, href, contentCount } = Astro.props;
+---
+
+<a href={href} class="region-card card">
+  <span class="region-card-name">{name}</span>
+  <span class="region-card-count">{contentCount} içerik</span>
+</a>
+
+<style>
+  .region-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    color: var(--color-text);
+  }
+  .region-card:hover {
+    border-color: var(--color-brand-500);
+    color: var(--color-text);
+  }
+  .region-card-name {
+    font-weight: 700;
+  }
+  .region-card-count {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+</style>
